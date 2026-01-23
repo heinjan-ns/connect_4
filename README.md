@@ -25,3 +25,5 @@ Instructions explain turn order (Player 1 first, then alternate)
 Instructions explain the 4-in-a-row win condition (horizontal, vertical, diagonal)
 Instructions explain draw condition (full board, no winner)
 Instructions clarify column selection process using numbers 1-7
+
+# CICD
