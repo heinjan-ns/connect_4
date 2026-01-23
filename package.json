@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint src tests --ext .ts",
+    "lint:fix": "eslint src tests --ext .ts --fix",
     "test": "jest --coverage",
     "test:cucumber": "cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:coverage": "nyc cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
