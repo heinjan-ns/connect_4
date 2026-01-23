@@ -1,0 +1,37 @@
+{
+  "name": "connect_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest --coverage",
+    "test:cucumber": "cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
+    "test:cucumber:coverage": "nyc cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
+    "test:cucumber:watch": "nodemon --watch src --watch tests --ext ts,feature --exec 'npm run test:cucumber:coverage'",
+    "build": "tsc",
+    "start": "node dist/src/main.js",
+    "dev": "ts-node src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.3.0",
+    "@cucumber/pretty-formatter": "^2.4.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.2",
+    "@types/prompt-sync": "^4.2.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "nyc": "^17.1.0",
+    "prompt-sync": "^4.2.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
