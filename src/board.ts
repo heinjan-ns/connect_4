@@ -39,7 +39,7 @@ export class Board {
   }
 
   private setCell({ row, column, player }: { row: number; column: number; player: Player }): void {
-    this.grid[row][column - 1] = playerCoin[player];
+    this.grid[row - 1][column - 1] = playerCoin[player];
   }
 
   isValidColumn(column: number): boolean {
