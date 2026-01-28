@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --ext .ts --fix",
-    "test": "vitest run --coverage",
+    "test": "npm run test:unit && npm run test:cucumber",
+    "test:unit": "vitest run",
     "test:cucumber": "cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:coverage": "c8 cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:watch": "nodemon --watch src --watch tests --ext ts,feature --exec 'npm run test:cucumber:coverage'",
@@ -23,9 +24,6 @@
   "license": "ISC",
   "devDependencies": {
     "@cucumber/cucumber": "^12.3.0",
-    "@cucumber/pretty-formatter": "^2.4.1",
-    "@swc/core": "^1.15.10",
-    "@swc/jest": "^0.2.39",
     "@types/node": "^24.10.2",
     "@types/prompt-sync": "^4.2.3",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
@@ -35,13 +33,10 @@
     "eslint": "^9.39.2",
     "eslint-plugin-prettier": "^5.5.5",
     "husky": "^9.1.7",
-    "jiti": "^2.6.1",
     "nodemon": "^3.1.11",
     "prompt-sync": "^4.2.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
-  },
-  "dependencies": {
-    "ts-node": "^10.9.2"
   }
 }
