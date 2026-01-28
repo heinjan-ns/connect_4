@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { Board, Cell } from '../../src/board';
+import { Board, Cell, Player } from '../../src/board';
 import * as assert from 'assert';
 import { Game } from '../../src/game';
 
@@ -188,11 +188,11 @@ Given('the board is empty', function () {
 });
 
 When('Player 1 drops a coin in column 3', function () {
-  this.game.makeMove(3);
+  this.result = this.game.makeMove(3);
 });
 
 Then('the coin lands in row 1 of column 3', function () {
-  // TODO: Assert coin is in row 1, column 3
+  assert.strictEqual(this.result.success, true);
 });
 
 Then(
@@ -226,4 +226,32 @@ Then('an error message states "Column 2 is full"', function () {
 
 Then('Player 1 is re-prompted to select a different column', function () {
   // TODO: Assert re-prompt message
+});
+
+Given('a new game has been initialized', function () {
+  this.game = new Game();
+});
+
+When('the game is ready for play', function () {
+  // TODO: implement
+});
+
+Then('the game indicates "Player 1\'s turn" \\(🟡\\)', function () {
+  assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
+});
+
+Then('Player 1 drops a coin', function () {
+  // TODO: implement
+});
+
+Then('the game indicates "Player 2\'s turn" \\(🔴\\)', function () {
+  // TODO: implement
+});
+
+Then('Player 2 drops a coin', function () {
+  // TODO: implement
+});
+
+Then('the game again indicates "Player 1\'s turn" \\(🟡\\)', function () {
+  // TODO: implement
 });
