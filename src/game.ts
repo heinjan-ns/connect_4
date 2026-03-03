@@ -87,10 +87,7 @@ export class Game {
   }
 
   isGameOver(): boolean {
-    if (this.gameStatus === Status.Won) {
-      return true;
-    }
-    return false;
+    return this.gameStatus === Status.Won;
   }
 
   private switchPlayer() {
@@ -105,22 +102,14 @@ export class Game {
     const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
     const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
 
-    const leftCount = this.countToDirection(
-      {
-        column: columnLastPlaced,
-        row: rowLastPlaced,
-        playerCell,
-      },
-      Direction.Left
-    );
-    const rightCount = this.countToDirection(
-      {
-        column: columnLastPlaced,
-        row: rowLastPlaced,
-        playerCell,
-      },
-      Direction.Right
-    );
+    const lastPlayedPosition: Position = {
+      column: columnLastPlaced,
+      row: rowLastPlaced,
+      playerCell,
+    };
+
+    const leftCount = this.countToDirection(lastPlayedPosition, Direction.Left);
+    const rightCount = this.countToDirection(lastPlayedPosition, Direction.Right);
 
     const horizontalCount = leftCount + rightCount + 1;
 
