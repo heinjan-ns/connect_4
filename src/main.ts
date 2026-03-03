@@ -1,9 +1,9 @@
-import * as prompt from 'prompt-sync';
+import * as promptSync from 'prompt-sync';
 import { Game } from './game';
 
 function main() {
   const game = new Game();
-  const input = prompt({ sigint: true }); // you can exit with ctrl-c
+  const input = promptSync.default({ sigint: true }); // you can exit with ctrl-c
 
   console.clear();
   console.log(game.getWelcomeMessage());

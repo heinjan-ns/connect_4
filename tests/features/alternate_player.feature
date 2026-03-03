@@ -11,8 +11,8 @@ Feature: As a game player
     Turn order is maintained throughout the game
     Gherkin Scenarios:
 
+    @story_5_1_alternate_player
     Scenario: Player 1 goes first, then turns alternate with each move
-
         Given a new game has been initialized
         When the game is ready for play
         Then the game indicates "Player 1's turn" (🟡)

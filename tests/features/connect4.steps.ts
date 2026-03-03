@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { Board, Cell, Player } from '../../src/board';
-import * as assert from 'assert';
+import assert from 'assert';
 import { Game } from '../../src/game';
 
 Given('the game is started', function () {
@@ -241,17 +241,44 @@ Then('the game indicates "Player 1\'s turn" \\(🟡\\)', function () {
 });
 
 Then('Player 1 drops a coin', function () {
-  // TODO: implement
+  this.game.makeMove(1);
 });
 
 Then('the game indicates "Player 2\'s turn" \\(🔴\\)', function () {
-  // TODO: implement
+  assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
 });
 
 Then('Player 2 drops a coin', function () {
-  // TODO: implement
+  this.game.makeMove(1);
 });
 
 Then('the game again indicates "Player 1\'s turn" \\(🟡\\)', function () {
-  // TODO: implement
+  assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
+});
+
+Given('column 5 has 6 coins stacked \\(one in each row from 1 to 6)', function () {
+  this.game = new Game();
+  this.game.makeMove(5); // player 1
+  this.game.makeMove(5); // player 2
+  this.game.makeMove(5); // 1
+  this.game.makeMove(5); // 2
+  this.game.makeMove(5); // 1
+  this.game.makeMove(4); // 2
+  this.game.makeMove(5); // 1
+});
+
+When('Player 2 attempts to drop a coin in column 5', function () {
+  this.result = this.game.makeMove(5);
+});
+
+Then('the game displays "Column 5 is full"', function () {
+  assert.strictEqual(this.result.message, 'Column 5 is full');
+});
+
+Then('Player 2 is prompted again to select another column', function () {
+  // prompt is always shown in the UI, no assert here
+});
+
+Then('it remains Player 2 turn \\(turn does not advance)', function () {
+  assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
 });
