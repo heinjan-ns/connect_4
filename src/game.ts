@@ -96,13 +96,7 @@ export class Game {
     let count = 1; // coin placed
 
     // Count to the left
-    for (let col = columnLastPlaced - 1; col >= 1; col--) {
-      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
-        count++;
-      } else {
-        break;
-      }
-    }
+    count = this.countToLeft(columnLastPlaced, rowLastPlaced, playerCell, count);
 
     // Count to the right
     for (let col = columnLastPlaced + 1; col <= 7; col++) {
@@ -116,6 +110,22 @@ export class Game {
       return true;
     }
     return false;
+  }
+
+  private countToLeft(
+    columnLastPlaced: number,
+    rowLastPlaced: number,
+    playerCell: Cell,
+    count: number
+  ) {
+    for (let col = columnLastPlaced - 1; col >= 1; col--) {
+      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    return count;
   }
 
   private giveRowLastPlaced(columnLastPlaced: number): number {
