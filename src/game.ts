@@ -1,7 +1,7 @@
 import { Board, Cell, Player } from './board';
 
-type Position = { column: number; row: number; playerCell: Cell };
 type Coordinate = { column: number; row: number };
+type OccupiedCell = Coordinate & { playerCell: Cell };
 
 enum Status {
   InProgress,
@@ -104,7 +104,7 @@ export class Game {
   private checkHorizontalWin(coordinate: Coordinate): boolean {
     const playerCell = this.board.getCell(coordinate);
 
-    const lastPlayedPosition: Position = {
+    const lastPlayedPosition: OccupiedCell = {
       ...coordinate,
       playerCell,
     };
@@ -117,7 +117,7 @@ export class Game {
     return horizontalCount >= Game.WIN_COUNT;
   }
 
-  private countToDirection({ column, row, playerCell }: Position, direction: number) {
+  private countToDirection({ column, row, playerCell }: OccupiedCell, direction: number) {
     let count = 0;
     for (
       let col = column + direction;
