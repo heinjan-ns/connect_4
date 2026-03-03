@@ -90,7 +90,7 @@ export class Game {
   }
 
   isGameOver(): boolean {
-    return this.gameStatus === Status.Won;
+    return this.gameStatus !== Status.InProgress;
   }
 
   private switchPlayer() {
