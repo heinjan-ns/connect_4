@@ -101,11 +101,14 @@ export class Game {
       row: rowLastPlaced,
       playerCell,
     });
-    const rightCount = this.countToRight({
-      column: columnLastPlaced,
-      row: rowLastPlaced,
-      playerCell,
-    });
+    const rightCount = this.countToRight(
+      {
+        column: columnLastPlaced,
+        row: rowLastPlaced,
+        playerCell,
+      },
+      1
+    );
 
     const count = leftCount + rightCount + 1;
 
@@ -115,9 +118,9 @@ export class Game {
     return false;
   }
 
-  private countToRight({ column, row, playerCell }: Position) {
+  private countToRight({ column, row, playerCell }: Position, direction: number) {
     let count = 0;
-    for (let col = column + 1; col <= 7; col++) {
+    for (let col = column + 1; col <= 7; col = col + direction) {
       if (this.board.getCell({ row, column: col }) === playerCell) {
         count++;
       } else {
