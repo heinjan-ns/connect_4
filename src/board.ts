@@ -9,22 +9,25 @@ export enum Player {
   Two = 2,
 }
 
+export const BOARD_COLUMNS = 7;
+export const BOARD_ROWS = 6;
+
 const playerCoin: Record<Player, Cell> = {
   [Player.One]: Cell.Player1,
   [Player.Two]: Cell.Player2,
 };
 
 export class Board {
-  lastRow = 6;
-  lastColumn = 7;
+  rows = BOARD_ROWS;
+  columns = BOARD_COLUMNS;
   grid: Cell[][];
 
   constructor() {
-    this.grid = Array.from({ length: this.lastRow }, () => Array(this.lastColumn).fill(Cell.Empty));
+    this.grid = Array.from({ length: this.rows }, () => Array(this.columns).fill(Cell.Empty));
   }
 
   placeCoin(column: number, player: Player): { success: boolean; row?: number; message?: string } {
-    for (let rowIndex = 1; rowIndex <= this.lastRow; rowIndex++) {
+    for (let rowIndex = 1; rowIndex <= this.rows; rowIndex++) {
       if (this.getCell({ row: rowIndex, column }) === Cell.Empty) {
         this.setCell({ row: rowIndex, column, player });
         return { success: true, row: rowIndex };
@@ -43,7 +46,7 @@ export class Board {
   }
 
   isValidColumn(column: number): boolean {
-    if (column > 0 && column <= this.lastColumn) {
+    if (column > 0 && column <= this.columns) {
       return true;
     }
     return false;
@@ -53,7 +56,7 @@ export class Board {
     // space-padding for nice formatting, otherwise the ◯s aren't aligned well
     const outputHeader = '   1  2  3  4  5  6  7';
     let rowOutput = '';
-    for (let rowCounter = this.lastRow; rowCounter >= 1; rowCounter--) {
+    for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
       rowOutput += '\n';
       rowOutput += rowCounter.toString();
       rowOutput += this.getRowOutput(rowCounter);
@@ -65,7 +68,7 @@ export class Board {
 
   private getRowOutput(rowToOutput: number): string {
     let rowOutput = '';
-    for (let columnCounter = 1; columnCounter <= this.lastColumn; columnCounter++) {
+    for (let columnCounter = 1; columnCounter <= this.columns; columnCounter++) {
       rowOutput += ' ' + this.getCell({ row: rowToOutput, column: columnCounter });
     }
     return rowOutput;

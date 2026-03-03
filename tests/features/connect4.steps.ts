@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { Board, Cell, Player } from '../../src/board';
+import { Board, BOARD_COLUMNS, BOARD_ROWS, Cell, Player } from '../../src/board';
 import assert from 'assert';
 import { Game } from '../../src/game';
 
@@ -29,7 +29,7 @@ Then('columns are labeled 1 through 7', function () {
   const lines = output.split('\n');
   const header = lines[0];
 
-  for (let column = 1; column <= this.board.lastColumn; column++) {
+  for (let column = 1; column <= BOARD_COLUMNS; column++) {
     assert.ok(header.includes(column.toString()));
   }
   assert.strictEqual(
@@ -138,11 +138,11 @@ Then("Player 2's coin shows as 🔴 in column 2 row 1", function () {
 });
 
 Then('empty positions show as ⚪', function () {
-  for (let rowCounter = 1; rowCounter <= this.game.board.rows; rowCounter++) {
-    for (let columnCounter = 1; columnCounter <= this.game.board.columns; columnCounter++) {
+  for (let rowCounter = 1; rowCounter <= BOARD_ROWS; rowCounter++) {
+    for (let columnCounter = 1; columnCounter <= BOARD_COLUMNS; columnCounter++) {
       if (rowCounter === 1 && (columnCounter === 1 || columnCounter === 2)) continue;
       assert.strictEqual(
-        this.board.getCell({ row: rowCounter, column: columnCounter }),
+        this.game.board.getCell({ row: rowCounter, column: columnCounter }),
         Cell.Empty
       );
     }

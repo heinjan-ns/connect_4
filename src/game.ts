@@ -13,6 +13,8 @@ enum Direction {
   Left = -1,
 }
 
+type MoveResult = { success: boolean; message?: string; winner?: Player };
+
 export class Game {
   board: Board;
   result: { success: boolean; message?: string; row?: number };
@@ -58,7 +60,7 @@ export class Game {
     return this.currentPlayer;
   }
 
-  makeMove(column: number): { success: boolean; message?: string; winner?: Player } {
+  makeMove(column: number): MoveResult {
     if (!this.board.isValidColumn(column)) {
       return {
         success: false,
@@ -102,15 +104,15 @@ export class Game {
   }
 
   private checkHorizontalWin(coordinate: Coordinate): boolean {
-    const playerCell = this.board.getCell(coordinate);
+    const playerInCell = this.board.getCell(coordinate);
 
-    const lastPlayedPosition: OccupiedCell = {
+    const lastPlayedCell: OccupiedCell = {
       ...coordinate,
-      playerCell,
+      playerCell: playerInCell,
     };
 
-    const leftCount = this.countToDirection(lastPlayedPosition, Direction.Left);
-    const rightCount = this.countToDirection(lastPlayedPosition, Direction.Right);
+    const leftCount = this.countToDirection(lastPlayedCell, Direction.Left);
+    const rightCount = this.countToDirection(lastPlayedCell, Direction.Right);
 
     const horizontalCount = leftCount + rightCount + 1;
 
