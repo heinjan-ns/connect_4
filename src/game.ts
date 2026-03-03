@@ -93,25 +93,20 @@ export class Game {
   private checkHorizontalWin(columnLastPlaced: number): boolean {
     const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
     const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
-    let count = 1; // coin placed
 
-    // Count to the left
-    count = this.countToLeft(columnLastPlaced, rowLastPlaced, playerCell, count);
+    const leftCount = this.countToLeft(columnLastPlaced, rowLastPlaced, playerCell);
+    const rightCount = this.countToRight(columnLastPlaced, rowLastPlaced, playerCell);
 
-    // Count to the right
-    count = this.countToRight(columnLastPlaced, rowLastPlaced, playerCell, count);
+    const count = leftCount + rightCount + 1;
+
     if (count >= 4) {
       return true;
     }
     return false;
   }
 
-  private countToRight(
-    columnLastPlaced: number,
-    rowLastPlaced: number,
-    playerCell: Cell,
-    count: number
-  ) {
+  private countToRight(columnLastPlaced: number, rowLastPlaced: number, playerCell: Cell) {
+    let count = 0;
     for (let col = columnLastPlaced + 1; col <= 7; col++) {
       if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
         count++;
@@ -122,12 +117,8 @@ export class Game {
     return count;
   }
 
-  private countToLeft(
-    columnLastPlaced: number,
-    rowLastPlaced: number,
-    playerCell: Cell,
-    count: number
-  ) {
+  private countToLeft(columnLastPlaced: number, rowLastPlaced: number, playerCell: Cell) {
+    let count = 0;
     for (let col = columnLastPlaced - 1; col >= 1; col--) {
       if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
         count++;
