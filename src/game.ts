@@ -1,5 +1,7 @@
 import { Board, Cell, Player } from './board';
 
+type Position = { column: number; row: number; playerCell: Cell };
+
 enum Status {
   InProgress,
   Won,
@@ -94,8 +96,16 @@ export class Game {
     const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
     const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
 
-    const leftCount = this.countToLeft(columnLastPlaced, rowLastPlaced, playerCell);
-    const rightCount = this.countToRight(columnLastPlaced, rowLastPlaced, playerCell);
+    const leftCount = this.countToLeft({
+      column: columnLastPlaced,
+      row: rowLastPlaced,
+      playerCell,
+    });
+    const rightCount = this.countToRight({
+      column: columnLastPlaced,
+      row: rowLastPlaced,
+      playerCell,
+    });
 
     const count = leftCount + rightCount + 1;
 
@@ -105,10 +115,10 @@ export class Game {
     return false;
   }
 
-  private countToRight(columnLastPlaced: number, rowLastPlaced: number, playerCell: Cell) {
+  private countToRight({ column, row, playerCell }: Position) {
     let count = 0;
-    for (let col = columnLastPlaced + 1; col <= 7; col++) {
-      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
+    for (let col = column + 1; col <= 7; col++) {
+      if (this.board.getCell({ row, column: col }) === playerCell) {
         count++;
       } else {
         break;
@@ -117,10 +127,10 @@ export class Game {
     return count;
   }
 
-  private countToLeft(columnLastPlaced: number, rowLastPlaced: number, playerCell: Cell) {
+  private countToLeft({ column, row, playerCell }: Position) {
     let count = 0;
-    for (let col = columnLastPlaced - 1; col >= 1; col--) {
-      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
+    for (let col = column - 1; col >= 1; col--) {
+      if (this.board.getCell({ row, column: col }) === playerCell) {
         count++;
       } else {
         break;
