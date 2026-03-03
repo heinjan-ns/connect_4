@@ -18,6 +18,10 @@ export class Game {
   currentPlayer: Player;
   gameStatus: Status;
 
+  private static readonly WIN_COUNT = 4;
+  private static readonly MIN_COLUMN = 1;
+  private static readonly MAX_COLUMN = 7;
+
   constructor() {
     this.board = new Board();
     this.currentPlayer = Player.One;
@@ -101,11 +105,14 @@ export class Game {
     const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
     const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
 
-    const leftCount = this.countToLeft({
-      column: columnLastPlaced,
-      row: rowLastPlaced,
-      playerCell,
-    });
+    const leftCount = this.countToDirection(
+      {
+        column: columnLastPlaced,
+        row: rowLastPlaced,
+        playerCell,
+      },
+      Direction.Left
+    );
     const rightCount = this.countToDirection(
       {
         column: columnLastPlaced,
@@ -115,9 +122,9 @@ export class Game {
       Direction.Right
     );
 
-    const count = leftCount + rightCount + 1;
+    const horizontalCount = leftCount + rightCount + 1;
 
-    if (count >= 4) {
+    if (horizontalCount >= Game.WIN_COUNT) {
       return true;
     }
     return false;
@@ -125,19 +132,11 @@ export class Game {
 
   private countToDirection({ column, row, playerCell }: Position, direction: number) {
     let count = 0;
-    for (let col = column + direction; col <= 7 && col >= 1; col = col + direction) {
-      if (this.board.getCell({ row, column: col }) === playerCell) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
-  private countToLeft({ column, row, playerCell }: Position) {
-    let count = 0;
-    for (let col = column - 1; col >= 1; col--) {
+    for (
+      let col = column + direction;
+      col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
+      col = col + direction
+    ) {
       if (this.board.getCell({ row, column: col }) === playerCell) {
         count++;
       } else {
