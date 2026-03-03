@@ -124,10 +124,7 @@ export class Game {
 
     const horizontalCount = leftCount + rightCount + 1;
 
-    if (horizontalCount >= Game.WIN_COUNT) {
-      return true;
-    }
-    return false;
+    return horizontalCount >= Game.WIN_COUNT;
   }
 
   private countToDirection({ column, row, playerCell }: Position, direction: number) {
@@ -153,6 +150,6 @@ export class Game {
         return rowIndex;
       }
     }
-    return 1; // Default to row 1 if somehow empty (shouldn't happen after placeCoin)
+    throw new Error(`No coin found in column ${columnLastPlaced}`);
   }
 }
