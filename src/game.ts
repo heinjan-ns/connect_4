@@ -99,6 +99,19 @@ export class Game {
     count = this.countToLeft(columnLastPlaced, rowLastPlaced, playerCell, count);
 
     // Count to the right
+    count = this.countToRight(columnLastPlaced, rowLastPlaced, playerCell, count);
+    if (count >= 4) {
+      return true;
+    }
+    return false;
+  }
+
+  private countToRight(
+    columnLastPlaced: number,
+    rowLastPlaced: number,
+    playerCell: Cell,
+    count: number
+  ) {
     for (let col = columnLastPlaced + 1; col <= 7; col++) {
       if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
         count++;
@@ -106,10 +119,7 @@ export class Game {
         break;
       }
     }
-    if (count >= 4) {
-      return true;
-    }
-    return false;
+    return count;
   }
 
   private countToLeft(
