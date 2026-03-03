@@ -7,6 +7,11 @@ enum Status {
   Won,
 }
 
+enum Direction {
+  Right = 1,
+  Left = -1,
+}
+
 export class Game {
   board: Board;
   result: { success: boolean; message?: string };
@@ -101,13 +106,13 @@ export class Game {
       row: rowLastPlaced,
       playerCell,
     });
-    const rightCount = this.countToRight(
+    const rightCount = this.countToDirection(
       {
         column: columnLastPlaced,
         row: rowLastPlaced,
         playerCell,
       },
-      1
+      Direction.Right
     );
 
     const count = leftCount + rightCount + 1;
@@ -118,9 +123,9 @@ export class Game {
     return false;
   }
 
-  private countToRight({ column, row, playerCell }: Position, direction: number) {
+  private countToDirection({ column, row, playerCell }: Position, direction: number) {
     let count = 0;
-    for (let col = column + 1; col <= 7; col = col + direction) {
+    for (let col = column + direction; col <= 7 && col >= 1; col = col + direction) {
       if (this.board.getCell({ row, column: col }) === playerCell) {
         count++;
       } else {
