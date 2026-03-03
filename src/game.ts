@@ -1,6 +1,7 @@
 import { Board, Cell, Player } from './board';
 
 type Position = { column: number; row: number; playerCell: Cell };
+type Coordinate = { column: number; row: number };
 
 enum Status {
   InProgress,
@@ -14,7 +15,7 @@ enum Direction {
 
 export class Game {
   board: Board;
-  result: { success: boolean; message?: string };
+  result: { success: boolean; message?: string; row?: number };
   currentPlayer: Player;
   gameStatus: Status;
 
@@ -72,7 +73,9 @@ export class Game {
       };
     }
 
-    if (this.checkHorizontalWin(column)) {
+    const row = this.result.row!;
+
+    if (this.checkHorizontalWin({ column, row })) {
       this.gameStatus = Status.Won;
       return {
         success: true,
@@ -98,13 +101,11 @@ export class Game {
     }
   }
 
-  private checkHorizontalWin(columnLastPlaced: number): boolean {
-    const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
-    const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
+  private checkHorizontalWin(coordinate: Coordinate): boolean {
+    const playerCell = this.board.getCell(coordinate);
 
     const lastPlayedPosition: Position = {
-      column: columnLastPlaced,
-      row: rowLastPlaced,
+      ...coordinate,
       playerCell,
     };
 
@@ -130,15 +131,5 @@ export class Game {
       }
     }
     return count;
-  }
-
-  private giveRowLastPlaced(columnLastPlaced: number): number {
-    for (let rowIndex = this.board.lastRow; rowIndex >= 1; rowIndex--) {
-      let currentCell = this.board.getCell({ row: rowIndex, column: columnLastPlaced });
-      if (currentCell !== Cell.Empty) {
-        return rowIndex;
-      }
-    }
-    throw new Error(`No coin found in column ${columnLastPlaced}`);
   }
 }
