@@ -282,3 +282,22 @@ Then('Player 2 is prompted again to select another column', function () {
 Then('it remains Player 2 turn \\(turn does not advance)', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
 });
+
+Given('the board has 3 consecutive yellow coins \\(🟡\\) in row 1, columns 3-5', function () {
+  this.game = new Game();
+  this.game.makeMove(3); // player 1
+  this.game.makeMove(3); // player 2
+  this.game.makeMove(4); // player 1
+  this.game.makeMove(4); // player 2
+  this.game.makeMove(5); // player 1
+  this.game.makeMove(5); // player 2
+});
+
+When('Player 1 drops a final coin completing the 4-in-a-row', function () {
+  this.result = this.game.makeMove(6);
+});
+
+Then('the game detects a horizontal win for Player 1 the game ends immediately', function () {
+  assert.strictEqual(this.result.winner, Player.One);
+  assert.strictEqual(this.game.isGameOver(), true);
+});

@@ -1,13 +1,20 @@
-import { Board, Player } from './board';
+import { Board, Cell, Player } from './board';
+
+enum Status {
+  InProgress,
+  Won,
+}
 
 export class Game {
   board: Board;
   result: { success: boolean; message?: string };
   currentPlayer: Player;
+  gameStatus: Status;
 
   constructor() {
     this.board = new Board();
     this.currentPlayer = Player.One;
+    this.gameStatus = Status.InProgress;
   }
 
   start() {
@@ -39,7 +46,7 @@ export class Game {
     return this.currentPlayer;
   }
 
-  makeMove(column: number): { success: boolean; message?: string } {
+  makeMove(column: number): { success: boolean; message?: string; winner?: Player } {
     if (!this.board.isValidColumn(column)) {
       return {
         success: false,
@@ -54,9 +61,25 @@ export class Game {
       };
     }
 
+    if (this.checkHorizontalWin(column)) {
+      this.gameStatus = Status.Won;
+      return {
+        success: true,
+        message: `Player ${this.currentPlayer} has won`,
+        winner: this.currentPlayer,
+      };
+    }
+
     this.switchPlayer();
 
     return { success: true };
+  }
+
+  isGameOver(): boolean {
+    if (this.gameStatus === Status.Won) {
+      return true;
+    }
+    return false;
   }
 
   private switchPlayer() {
@@ -65,5 +88,43 @@ export class Game {
     } else {
       this.currentPlayer = Player.One;
     }
+  }
+
+  private checkHorizontalWin(columnLastPlaced: number): boolean {
+    const rowLastPlaced = this.giveRowLastPlaced(columnLastPlaced);
+    const playerCell = this.board.getCell({ row: rowLastPlaced, column: columnLastPlaced });
+    let count = 1; // coin placed
+
+    // Count to the left
+    for (let col = columnLastPlaced - 1; col >= 1; col--) {
+      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    // Count to the right
+    for (let col = columnLastPlaced + 1; col <= 7; col++) {
+      if (this.board.getCell({ row: rowLastPlaced, column: col }) === playerCell) {
+        count++;
+      } else {
+        break;
+      }
+    }
+    if (count >= 4) {
+      return true;
+    }
+    return false;
+  }
+
+  private giveRowLastPlaced(columnLastPlaced: number): number {
+    for (let rowIndex = this.board.lastRow; rowIndex >= 1; rowIndex--) {
+      let currentCell = this.board.getCell({ row: rowIndex, column: columnLastPlaced });
+      if (currentCell !== Cell.Empty) {
+        return rowIndex;
+      }
+    }
+    return 1; // Default to row 1 if somehow empty (shouldn't happen after placeCoin)
   }
 }

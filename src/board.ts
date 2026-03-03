@@ -23,11 +23,11 @@ export class Board {
     this.grid = Array.from({ length: this.lastRow }, () => Array(this.lastColumn).fill(Cell.Empty));
   }
 
-  placeCoin(column: number, player: Player): { success: boolean; message?: string } {
-    for (let row = 1; row <= this.lastRow; row++) {
-      if (this.getCell({ row, column }) === Cell.Empty) {
-        this.setCell({ row, column, player });
-        return { success: true };
+  placeCoin(column: number, player: Player): { success: boolean; row?: number; message?: string } {
+    for (let rowIndex = 1; rowIndex <= this.lastRow; rowIndex++) {
+      if (this.getCell({ row: rowIndex, column }) === Cell.Empty) {
+        this.setCell({ row: rowIndex, column, player });
+        return { success: true, row: rowIndex };
       }
     }
 
