@@ -112,22 +112,26 @@ export class Game {
   private checkDiagonalWin(coordinate: Coordinate): boolean {
     const playerInCell = this.board.getCell(coordinate);
 
-    const diagonalRightUp = this.countDiagonalDirection(coordinate, playerInCell, 1);
-    const diagonalLeftDown = this.countDiagonalDirection(coordinate, playerInCell, -1);
+    const lastPlayedCell: OccupiedCell = {
+      ...coordinate,
+      playerCell: playerInCell,
+    };
+    const diagonalRightUp = this.countDiagonalDirection(lastPlayedCell, 1);
+    const diagonalLeftDown = this.countDiagonalDirection(lastPlayedCell, -1);
 
     const diagonalCount = 1 + diagonalRightUp + diagonalLeftDown;
     return diagonalCount >= Game.WIN_COUNT;
   }
-  private countDiagonalDirection(coordinate: Coordinate, playerInCell: Cell, direction: number) {
+  private countDiagonalDirection({ column, row, playerCell }: OccupiedCell, direction: number) {
     let counter = 0;
-    let row = coordinate.row + direction;
-    let col = coordinate.column + direction;
+    let rowToCheck = row + direction;
+    let columnToCheck = column + direction;
 
-    while (row >= 1 && row <= 6 && col >= 1 && col <= 7) {
-      if (this.board.getCell({ row, column: col }) === playerInCell) {
+    while (rowToCheck >= 1 && rowToCheck <= 6 && columnToCheck >= 1 && columnToCheck <= 7) {
+      if (this.board.getCell({ row: rowToCheck, column: columnToCheck }) === playerCell) {
         counter++;
-        row += direction;
-        col += direction;
+        rowToCheck += direction;
+        columnToCheck += direction;
       } else {
         break;
       }
