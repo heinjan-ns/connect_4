@@ -21,7 +21,7 @@ function main() {
     const inputString = 'Player ' + game.getCurrentPlayer() + ': Enter colum (1-7): ';
     const column = parseInt(input(inputString));
     const result = game.makeMove(column);
-    //console.clear();
+    console.clear();
 
     if (!result.success) {
       console.log(result.message);
