@@ -75,9 +75,7 @@ export class Game {
       };
     }
 
-    const row = this.result.row!;
-
-    if (this.checkHorizontalWin({ column, row })) {
+    if (this.checkHorizontalWin({ column, row: this.result.row! })) {
       this.gameStatus = Status.Won;
       return {
         success: true,
