@@ -23,12 +23,16 @@ Feature: Detect Vertical and Diagonal Wins
         Then the game detects a vertical win for Player 2
         And the game ends immediately
 
-# @story_8_detect_diagonal_win
-# Scenario: Player 1 wins with 4 coins in upward-right diagonal (↗)
-#     Given the board has 4 yellow coins (🟡)
-#     on an upward-right diagonal:
-#     (row: 1, col: 2), (row: 2, col: 3),
-#     (row: 3, col: 4), (row: 4, col: 5)
-#     When Player 1 drops a final coin completing the diagonal
-#     Then the game detects a diagonal win for Player 1
-#     And the game ends immediately
+    @story_8_detect_diagonal_win
+    Scenario: Player 1 wins with 4 coins in upward-right diagonal (↗)
+        Given the board has 4 yellow coins (🟡) on an upward-right diagonal: (row: 1, col: 2), (row: 2, col: 3), (row: 3, col: 4), (row: 4, col: 5)
+        When Player 1 drops a final coin completing the diagonal
+        Then the game detects a diagonal win for Player 1
+        And the game ends immediately
+
+    @story_8_detect_diagonal_win
+    Scenario: Player 1 wins with 4 coins in upward-right diagonal (↗)
+        Given the board has 4 yellow coins (🟡) on an upward-right diagonal: (row: 2, col: 3), (row: 3, col: 4), (row: 4, col: 5)
+        When Player 1 drops a final coin in column 2 completing the diagonal
+        Then the game detects a diagonal win for Player 1
+        And the game ends immediately

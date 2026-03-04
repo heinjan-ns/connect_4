@@ -75,16 +75,7 @@ export class Game {
       };
     }
 
-    if (this.checkHorizontalWin({ column, row: this.result.row! })) {
-      this.gameStatus = Status.Won;
-      return {
-        success: true,
-        message: `Player ${this.currentPlayer} has won`,
-        winner: this.currentPlayer,
-      };
-    }
-
-    if (this.checkVerticalWin({ column, row: this.result.row! })) {
+    if (this.checkWin({ column, row: this.result.row! })) {
       this.gameStatus = Status.Won;
       return {
         success: true,
@@ -110,13 +101,42 @@ export class Game {
     }
   }
 
-  private checkVerticalWin(coordinate: Coordinate): boolean {
+  private checkWin(coordinate: Coordinate): boolean {
+    const vertWin = this.checkVerticalWin(coordinate);
+    const horizonWin = this.checkHorizontalWin(coordinate);
+    const diagonalWin = this.checkDiagonalWin(coordinate);
+
+    return vertWin || horizonWin || diagonalWin;
+  }
+
+  private checkDiagonalWin(coordinate: Coordinate): boolean {
     const playerInCell = this.board.getCell(coordinate);
 
-    // const lastPlayedCell: OccupiedCell = {
-    //   ...coordinate,
-    //   playerCell: playerInCell,
-    // };
+    const diagonalRightUp = this.countDiagonalDirection(coordinate, playerInCell, 1);
+    const diagonalLeftDown = this.countDiagonalDirection(coordinate, playerInCell, -1);
+
+    const diagonalCount = 1 + diagonalRightUp + diagonalLeftDown;
+    return diagonalCount >= Game.WIN_COUNT;
+  }
+  private countDiagonalDirection(coordinate: Coordinate, playerInCell: Cell, direction: number) {
+    let counter = 0;
+    let row = coordinate.row + direction;
+    let col = coordinate.column + direction;
+
+    while (row >= 1 && row <= 6 && col >= 1 && col <= 7) {
+      if (this.board.getCell({ row, column: col }) === playerInCell) {
+        counter++;
+        row += direction;
+        col += direction;
+      } else {
+        break;
+      }
+    }
+    return counter;
+  }
+
+  private checkVerticalWin(coordinate: Coordinate): boolean {
+    const playerInCell = this.board.getCell(coordinate);
 
     let downCount = 1;
     for (let row = coordinate.row - 1; row >= 1; row--) {
