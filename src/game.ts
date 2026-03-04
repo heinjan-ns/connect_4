@@ -84,6 +84,15 @@ export class Game {
       };
     }
 
+    if (this.checkVerticalWin({ column, row: this.result.row! })) {
+      this.gameStatus = Status.Won;
+      return {
+        success: true,
+        message: `Player ${this.currentPlayer} has won`,
+        winner: this.currentPlayer,
+      };
+    }
+
     this.switchPlayer();
 
     return { success: true };
@@ -99,6 +108,25 @@ export class Game {
     } else {
       this.currentPlayer = Player.One;
     }
+  }
+
+  private checkVerticalWin(coordinate: Coordinate): boolean {
+    const playerInCell = this.board.getCell(coordinate);
+
+    // const lastPlayedCell: OccupiedCell = {
+    //   ...coordinate,
+    //   playerCell: playerInCell,
+    // };
+
+    let downCount = 1;
+    for (let row = coordinate.row - 1; row >= 1; row--) {
+      if (this.board.getCell({ row: row, column: coordinate.column }) === playerInCell) {
+        downCount++;
+      } else {
+        break;
+      }
+    }
+    return downCount >= Game.WIN_COUNT;
   }
 
   private checkHorizontalWin(coordinate: Coordinate): boolean {
