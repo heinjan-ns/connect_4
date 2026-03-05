@@ -118,11 +118,9 @@ export class Game {
   }
 
   private checkDiagonalWin(coordinate: Coordinate): boolean {
-    const playerInCell = this.board.getCell(coordinate);
-
     const lastPlayedCell: OccupiedCell = {
       ...coordinate,
-      playerCell: playerInCell,
+      playerCell: this.board.getCell(coordinate),
     };
     const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTIONS.RightUp);
     const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTIONS.DownLeft);
@@ -148,25 +146,18 @@ export class Game {
   }
 
   private checkVerticalWin(coordinate: Coordinate): boolean {
-    const playerInCell = this.board.getCell(coordinate);
-
-    let downCount = 1;
-    for (let row = coordinate.row - 1; this.isValidRow(row); row--) {
-      if (this.board.getCell({ row: row, column: coordinate.column }) === playerInCell) {
-        downCount++;
-      } else {
-        break;
-      }
-    }
-    return downCount >= Game.WIN_COUNT;
+    const lastPlayedCell: OccupiedCell = {
+      ...coordinate,
+      playerCell: this.board.getCell(coordinate),
+    };
+    const vertCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Down);
+    return vertCount + 1 >= Game.WIN_COUNT;
   }
 
   private checkHorizontalWin(coordinate: Coordinate): boolean {
-    const playerInCell = this.board.getCell(coordinate);
-
     const lastPlayedCell: OccupiedCell = {
       ...coordinate,
-      playerCell: playerInCell,
+      playerCell: this.board.getCell(coordinate),
     };
 
     const leftCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Left);
