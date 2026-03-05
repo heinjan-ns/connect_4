@@ -131,17 +131,21 @@ Then(
   }
 );
 
-Then('empty positions show as ⚪', function () {
-  for (let rowCounter = 1; rowCounter <= BOARD_ROWS; rowCounter++) {
-    for (let columnCounter = 1; columnCounter <= BOARD_COLUMNS; columnCounter++) {
-      if (rowCounter === 1 && (columnCounter === 1 || columnCounter === 2)) continue;
-      assert.strictEqual(
-        this.game.board.getCell({ row: rowCounter, column: columnCounter }),
-        Cell.Empty
-      );
+Then(
+  'the board has {int} empty positions out of {int} total',
+  function (emptyCount: number, totalCount: number) {
+    let empty = 0;
+    for (let row = 1; row <= BOARD_ROWS; row++) {
+      for (let column = 1; column <= BOARD_COLUMNS; column++) {
+        if (this.game.board.getCell({ row, column }) === Cell.Empty) {
+          empty++;
+        }
+      }
     }
+    assert.strictEqual(empty, emptyCount);
+    assert.strictEqual(BOARD_ROWS * BOARD_COLUMNS, totalCount);
   }
-});
+);
 
 When('Player {int} enters column {int}', function (_player: number, column: number) {
   this.result = this.game.makeMove(column);
