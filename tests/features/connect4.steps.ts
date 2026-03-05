@@ -151,11 +151,6 @@ When('Player {int} enters column {int}', function (_player: number, column: numb
   this.result = this.game.makeMove(column);
 });
 
-Given('the board is empty', function () {
-  this.game = new Game();
-  this.game.start();
-});
-
 Then('the coin lands in row {int} of column {int}', function (row: number, column: number) {
   assert.ok(this.game.board.getCell({ row, column }));
   assert.strictEqual(this.result.success, true);

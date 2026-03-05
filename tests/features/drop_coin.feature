@@ -16,7 +16,8 @@ Feature: Drop Coin and Fall to Bottom Position
 
     @story_4_drop_coin
     Scenario: Coin drops to lowest empty row in selected column
-        Given the board is empty
+        Given a new game has been initialized
+        Then the board has 42 empty positions out of 42 total
         When Player 1 drops a coin in column 3
         Then the coin lands in row 1 of column 3
         And the position records a yellow coin (🟡) at coordinates (row: 1, column: 3)
