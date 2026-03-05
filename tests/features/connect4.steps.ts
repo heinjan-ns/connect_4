@@ -119,13 +119,17 @@ When('the board state is displayed', function () {
   // nothing to test, don't display the state
 });
 
-Then("Player 1's coin shows as 🟡 in column 1 row 1", function () {
-  assert.strictEqual(this.game.board.getCell({ row: 1, column: 1 }), Cell.Player1);
-});
-
-Then("Player 2's coin shows as 🔴 in column 2 row 1", function () {
-  assert.strictEqual(this.game.board.getCell({ row: 1, column: 2 }), Cell.Player2);
-});
+Then(
+  'Player {int} has a coin in column {int} row {int}',
+  function (player: number, column: number, row: number) {
+    const cell = this.game.board.getCell({ row, column });
+    if (player === 1) {
+      assert.strictEqual(cell, Cell.Player1);
+    } else {
+      assert.strictEqual(cell, Cell.Player2);
+    }
+  }
+);
 
 Then('empty positions show as ⚪', function () {
   for (let rowCounter = 1; rowCounter <= BOARD_ROWS; rowCounter++) {
