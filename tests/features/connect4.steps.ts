@@ -149,9 +149,9 @@ Then('empty positions show as ⚪', function () {
   }
 });
 
-Given('it is Player 1 turn', function () {
-  this.game = new Game();
-});
+// Given('it is Player 1 turn', function () {
+//   this.game = new Game();
+// });
 
 Then('the column number 4 is accepted', function () {
   assert.strictEqual(this.result.success, true);
@@ -161,12 +161,7 @@ Then('the game processes the move to drop a coin', function () {
   assert.strictEqual(this.game.board.getCell({ row: 1, column: 4 }), Cell.Player1);
 });
 
-Given('it is Player 2 turn', function () {
-  this.game = new Game();
-  this.game.makeMove(1); // move for player 1
-});
-
-When('Player 2 enters column 9', function () {
+When('Player 1 enters column 9', function () {
   this.result = this.game.makeMove(9);
 });
 
@@ -174,7 +169,7 @@ Then('the input is rejected with an error message', function () {
   assert.strictEqual(this.result.success, false);
 });
 
-Then('Player 2 is re-prompted to select a valid column', function () {
+Then('Player 1 is re-prompted to select a valid column', function () {
   assert.ok(this.result.message);
 });
 
@@ -193,6 +188,10 @@ Then(
     assert.strictEqual(this.game.board.getCell({ row: 1, column: 3 }), Cell.Player1);
   }
 );
+
+Then('the move is accepted', function () {
+  assert.strictEqual(this.result.success, true);
+});
 
 Then('the move is rejected', function () {
   assert.strictEqual(this.result.success, false);
@@ -226,8 +225,12 @@ Then('Player 2 is prompted again to select another column', function () {
   // prompt is always shown in the UI, no assert here
 });
 
-Then('it remains Player 2 turn', function () {
-  assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
+Then('it remains Player {int} turn', function (player: number) {
+  assert.strictEqual(this.game.getCurrentPlayer(), player);
+});
+
+Then('it is Player {int} turn', function (player: number) {
+  assert.strictEqual(this.game.getCurrentPlayer(), player);
 });
 
 Then('the game ends immediately', function () {
