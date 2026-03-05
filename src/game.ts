@@ -30,6 +30,8 @@ export class Game {
   private static readonly WIN_COUNT = 4;
   private static readonly MIN_COLUMN = 1;
   private static readonly MAX_COLUMN = 7;
+  private static readonly MIN_ROW = 1;
+  private static readonly MAX_ROW = 6;
 
   constructor() {
     this.board = new Board();
@@ -175,30 +177,11 @@ export class Game {
     return horizontalCount >= Game.WIN_COUNT;
   }
 
-  private countToDirectionOnlyHorizonal(
-    { column, row, playerCell }: OccupiedCell,
-    direction: Direction
-  ) {
-    let count = 0;
-    for (
-      let col = column + direction.column;
-      this.isValidColumn(col);
-      col = col + direction.column
-    ) {
-      if (this.board.getCell({ row: row, column: col }) === playerCell) {
-        count++;
-      } else {
-        break;
-      }
-    }
-    return count;
-  }
-
   private isValidColumn(col: number) {
     return col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
   }
 
   private isValidRow(row: number) {
-    return row <= 6 && row >= 1;
+    return row <= Game.MAX_ROW && row >= Game.MIN_ROW;
   }
 }
