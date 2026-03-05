@@ -52,6 +52,15 @@ export class Board {
     return false;
   }
 
+  isBoardFull(): boolean {
+    for (let columnIndex = 1; columnIndex <= this.columns; columnIndex++) {
+      if (this.getCell({ row: this.rows, column: columnIndex }) === Cell.Empty) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   consoleOutput(): string {
     // space-padding for nice formatting, otherwise the ◯s aren't aligned well
     const outputHeader = '   1  2  3  4  5  6  7';

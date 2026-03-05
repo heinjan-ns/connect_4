@@ -192,7 +192,15 @@ Then('the game ends immediately', function () {
 Given('a game setup with moves: {string}', function (setupMoves: string) {
   this.game = new Game();
   const moves = setupMoves.split(',').map((m) => parseInt(m.trim()));
-  moves.forEach((column) => this.game.makeMove(column));
+  moves.forEach((column) => {
+    const result = this.game.makeMove(column);
+    assert.strictEqual(result.success, true, `Setup move failed for column ${column}`);
+    assert.strictEqual(
+      this.game.isGameOver(),
+      false,
+      `Game is over, setup failed for column ${column}`
+    );
+  });
 });
 
 When('Player {int} drops a coin in column {int}', function (player: number, column: number) {
@@ -201,4 +209,12 @@ When('Player {int} drops a coin in column {int}', function (player: number, colu
 
 Then('the game detects a win for Player {int}', function (player: number) {
   assert.strictEqual(this.result.winner, player);
+});
+
+Then('the game declares "Game is a Draw"', function () {
+  // assert.strictEqual(this.result.winner, player);
+});
+
+Then('the game ends without a winner', function () {
+  // TODO: implement game over without winner check
 });

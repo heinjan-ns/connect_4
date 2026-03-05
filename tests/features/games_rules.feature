@@ -47,7 +47,7 @@ Feature: Game Rules and Turn Management
         And Player 1 is prompted to select a valid column
         And it remains Player 1 turn
 
-    Scenario: Player cannot drop coin into full column and remains on their turn
+    Scenario Outline: Player cannot drop coin into full column and remains on their turn
         Given a game setup with moves: <setup_moves>
         When Player <player> drops a coin in column <column>
         Then <outcome>
@@ -58,3 +58,15 @@ Feature: Game Rules and Turn Management
         Examples:
             | setup_moves     | player | column | outcome                              |
             | "5,5,5,5,5,5,1" | 2      | 5      | the game displays "Column 5 is full" |
+
+    @story_9_Detect_Draw_Condition
+    Scenario Outline: Game ends in draw when board is full with no winner
+        Given a game setup with moves: <setup_moves>
+        Then the board has 0 empty positions out of 42 total
+        When Player <player> drops a coin in column <column>
+        Then the game declares "Game is a Draw"
+        And the game ends without a winner
+
+        Examples:
+            | setup_moves                                                                           | player | column |
+            | "1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,2,5" | 1      | 5      |

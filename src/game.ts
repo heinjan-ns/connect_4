@@ -6,6 +6,7 @@ type OccupiedCell = Coordinate & { playerCell: Cell };
 enum Status {
   InProgress,
   Won,
+  Draw,
 }
 
 type Direction = { row: number; column: number };
@@ -13,7 +14,7 @@ type Direction = { row: number; column: number };
 const DIRECTION = {
   Right: { row: 0, column: 1 },
   Left: { row: 0, column: -1 },
-  Up: { row: 1, column: 0 },
+  Up: { row: 1, column: 0 }, // not used
   Down: { row: -1, column: 0 },
   RightUp: { row: 1, column: 1 },
   LeftDown: { row: -1, column: -1 },
@@ -21,7 +22,7 @@ const DIRECTION = {
   LeftUp: { row: 1, column: -1 },
 };
 
-type MoveResult = { success: boolean; message?: string; winner?: Player };
+type MoveResult = { success: boolean; message?: string; winner?: Player; isDraw?: boolean };
 
 export class Game {
   board: Board;
@@ -77,6 +78,16 @@ export class Game {
         message: '❌ Please select a valid column (1-7)',
       };
     }
+
+    if (this.board.isBoardFull()) {
+      this.gameStatus = Status.Draw;
+      return {
+        success: true,
+        message: 'Game is a Draw"',
+        isDraw: true,
+      };
+    }
+
     this.result = this.board.placeCoin(column, this.currentPlayer);
     if (!this.result.success) {
       return {
