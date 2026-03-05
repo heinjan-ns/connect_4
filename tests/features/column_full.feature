@@ -11,10 +11,14 @@ Feature: Validate Column Fullness
 
     @story_6_validate_column_full
     Scenario: Player cannot drop coin into full column and remains on their turn
-
-        Given column 5 has 6 coins stacked (one in each row from 1 to 6)
-        # And it is Player 2 turn
-        When Player 2 attempts to drop a coin in column 5
-        Then the game displays "Column 5 is full"
+        Given a game setup with moves: <setup_moves>
+        When Player <player> drops a coin in column <column>
+        Then <outcome>
+        And the move is rejected
         And Player 2 is prompted again to select another column
-        And it remains Player 2 turn (turn does not advance)
+        And it remains Player 2 turn
+
+        Examples:
+            | setup_moves     | player | column | outcome                              |
+            | "5,5,5,5,5,5,1" | 2      | 5      | the game displays "Column 5 is full" |
+#| "1"             | 2      | 9      | the input is rejected with an error message |

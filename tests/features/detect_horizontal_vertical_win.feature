@@ -12,7 +12,7 @@ Feature: Detect horizontal and vertical Win
 
     Scenario Outline: Player wins with 4-in-a-row
         Given a game setup with moves: <setup_moves>
-        When Player <player> drops a coin in the column <final_column>
+        When Player <player> drops a coin in column <final_column>
         Then the game detects a win for Player <player>
         And the game ends immediately
 

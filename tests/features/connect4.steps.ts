@@ -187,9 +187,9 @@ Given('the board is empty', function () {
   this.game.start();
 });
 
-When('Player 1 drops a coin in column 3', function () {
-  this.result = this.game.makeMove(3);
-});
+// When('Player 1 drops a coin in column 3', function () {
+//   this.result = this.game.makeMove(3);
+// });
 
 Then('the coin lands in row 1 of column 3', function () {
   assert.strictEqual(this.result.success, true);
@@ -202,30 +202,8 @@ Then(
   }
 );
 
-Given('column 2 is completely full with 6 coins stacked from row 1 to row 6', function () {
-  this.game = new Game();
-  this.game.makeMove(2);
-  this.game.makeMove(2);
-  this.game.makeMove(2);
-  this.game.makeMove(2);
-  this.game.makeMove(2);
-  this.game.makeMove(2);
-});
-
-When('Player 1 attempts to drop a coin in column 2', function () {
-  this.result = this.game.makeMove(2);
-});
-
 Then('the move is rejected', function () {
   assert.strictEqual(this.result.success, false);
-});
-
-Then('an error message states "Column 2 is full"', function () {
-  assert.strictEqual(this.result.message, 'Column 2 is full');
-});
-
-Then('Player 1 is re-prompted to select a different column', function () {
-  // TODO: Assert re-prompt message
 });
 
 Given('a new game has been initialized', function () {
@@ -256,21 +234,6 @@ Then('the game again indicates "Player 1\'s turn" \\(🟡\\)', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
 });
 
-Given('column 5 has 6 coins stacked \\(one in each row from 1 to 6)', function () {
-  this.game = new Game();
-  this.game.makeMove(5); // player 1
-  this.game.makeMove(5); // player 2
-  this.game.makeMove(5); // 1
-  this.game.makeMove(5); // 2
-  this.game.makeMove(5); // 1
-  this.game.makeMove(4); // 2
-  this.game.makeMove(5); // 1
-});
-
-When('Player 2 attempts to drop a coin in column 5', function () {
-  this.result = this.game.makeMove(5);
-});
-
 Then('the game displays "Column 5 is full"', function () {
   assert.strictEqual(this.result.message, 'Column 5 is full');
 });
@@ -279,7 +242,7 @@ Then('Player 2 is prompted again to select another column', function () {
   // prompt is always shown in the UI, no assert here
 });
 
-Then('it remains Player 2 turn \\(turn does not advance)', function () {
+Then('it remains Player 2 turn', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
 });
 
@@ -341,7 +304,7 @@ Given('a game setup with moves: {string}', function (setupMoves: string) {
   moves.forEach((column) => this.game.makeMove(column));
 });
 
-When('Player {int} drops a coin in the column {int}', function (player: number, column: number) {
+When('Player {int} drops a coin in column {int}', function (player: number, column: number) {
   this.result = this.game.makeMove(column);
 });
 
