@@ -43,16 +43,16 @@ Feature: Game Rules and Turn Management
 
     Scenario: Player enters invalid column number outside valid range
         When Player 1 enters column 9
-        Then the input is rejected with an error message
-        And Player 1 is re-prompted to select a valid column
+        Then the move is rejected with an error message
+        And Player 1 is prompted to select a valid column
         And it remains Player 1 turn
 
     Scenario: Player cannot drop coin into full column and remains on their turn
         Given a game setup with moves: <setup_moves>
         When Player <player> drops a coin in column <column>
         Then <outcome>
-        And the move is rejected
-        And Player 2 is prompted again to select another column
+        And the move is rejected with an error message
+        And Player 2 is prompted to select a valid column
         And it remains Player 2 turn
 
         Examples:

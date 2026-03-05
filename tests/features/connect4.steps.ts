@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { Board, BOARD_COLUMNS, BOARD_ROWS, Cell, Player } from '../../src/board';
+import { Board, BOARD_COLUMNS, BOARD_ROWS, Cell } from '../../src/board';
 import assert from 'assert';
 import { Game } from '../../src/game';
 
@@ -111,18 +111,8 @@ Then('the player is prompted to press a key to start the game', function () {
   assert(prompt.includes('Press any key to start'));
 });
 
-Then('upon pressing that key, the game begins with a fresh board', function () {});
-
-Given('the game has started and coins are placed on the board', function () {
-  this.game = new Game();
-});
-
-Given('column 1 row 1 contains a Player 1 coin', function () {
-  this.game.makeMove(1);
-});
-
-Given('column 2 row 1 contains a Player 2 coin', function () {
-  this.game.makeMove(2);
+Then('upon pressing that key, the game begins with a fresh board', function () {
+  // no UI tests here
 });
 
 When('the board state is displayed', function () {
@@ -149,28 +139,8 @@ Then('empty positions show as ⚪', function () {
   }
 });
 
-// Given('it is Player 1 turn', function () {
-//   this.game = new Game();
-// });
-
-Then('the column number 4 is accepted', function () {
-  assert.strictEqual(this.result.success, true);
-});
-
-Then('the game processes the move to drop a coin', function () {
-  assert.strictEqual(this.game.board.getCell({ row: 1, column: 4 }), Cell.Player1);
-});
-
-When('Player 1 enters column 9', function () {
-  this.result = this.game.makeMove(9);
-});
-
-Then('the input is rejected with an error message', function () {
-  assert.strictEqual(this.result.success, false);
-});
-
-Then('Player 1 is re-prompted to select a valid column', function () {
-  assert.ok(this.result.message);
+When('Player {int} enters column {int}', function (_player: number, column: number) {
+  this.result = this.game.makeMove(column);
 });
 
 Given('the board is empty', function () {
@@ -178,7 +148,8 @@ Given('the board is empty', function () {
   this.game.start();
 });
 
-Then('the coin lands in row 1 of column 3', function () {
+Then('the coin lands in row {int} of column {int}', function (row: number, column: number) {
+  assert.ok(this.game.board.getCell({ row, column }));
   assert.strictEqual(this.result.success, true);
 });
 
@@ -193,36 +164,21 @@ Then('the move is accepted', function () {
   assert.strictEqual(this.result.success, true);
 });
 
-Then('the move is rejected', function () {
+Then('the move is rejected with an error message', function () {
   assert.strictEqual(this.result.success, false);
+  assert.ok(this.result.message);
 });
-
 Given('a new game has been initialized', function () {
   this.game = new Game();
-});
-
-When('the game is ready for play', function () {
-  // TODO: implement
-});
-
-Then('the game indicates "Player 1\'s turn" \\(🟡\\)', function () {
-  assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
-});
-
-Then('the game indicates "Player 2\'s turn" \\(🔴\\)', function () {
-  assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
-});
-
-Then('the game again indicates "Player 1\'s turn" \\(🟡\\)', function () {
-  assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
 });
 
 Then('the game displays "Column 5 is full"', function () {
   assert.strictEqual(this.result.message, 'Column 5 is full');
 });
 
-Then('Player 2 is prompted again to select another column', function () {
+Then('Player {int} is prompted to select a valid column', function (player: number) {
   // prompt is always shown in the UI, no assert here
+  assert.strictEqual(this.game.getCurrentPlayer(), player);
 });
 
 Then('it remains Player {int} turn', function (player: number) {
