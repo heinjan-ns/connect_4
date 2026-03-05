@@ -62,11 +62,11 @@ Feature: Game Rules and Turn Management
     @story_9_Detect_Draw_Condition
     Scenario Outline: Game ends in draw when board is full with no winner
         Given a game setup with moves: <setup_moves>
-        Then the board has 0 empty positions out of 42 total
+        Then the board has 1 empty positions out of 42 total
         When Player <player> drops a coin in column <column>
         Then the game declares "Game is a Draw"
         And the game ends without a winner
 
         Examples:
-            | setup_moves                                                                           | player | column |
-            | "1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,2,5" | 1      | 5      |
+            | setup_moves                                                                         | player | column |
+            | "1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,2" | 1      | 5      |

@@ -79,15 +79,6 @@ export class Game {
       };
     }
 
-    if (this.board.isBoardFull()) {
-      this.gameStatus = Status.Draw;
-      return {
-        success: true,
-        message: 'Game is a Draw"',
-        isDraw: true,
-      };
-    }
-
     this.result = this.board.placeCoin(column, this.currentPlayer);
     if (!this.result.success) {
       return {
@@ -96,7 +87,23 @@ export class Game {
       };
     }
 
-    if (this.checkWin({ column, row: this.result.row! })) {
+    const lastPlacedCoin: Coordinate = { column, row: this.result.row! };
+    const winResult = this.handleWin(lastPlacedCoin);
+    if (winResult) {
+      return winResult;
+    }
+
+    const handleDraw = this.handleDraw();
+    if (handleDraw) {
+      return handleDraw;
+    }
+
+    this.switchPlayer();
+    return { success: true };
+  }
+
+  private handleWin(coordinate: Coordinate): MoveResult | null {
+    if (this.checkWin(coordinate)) {
       this.gameStatus = Status.Won;
       return {
         success: true,
@@ -104,10 +111,18 @@ export class Game {
         winner: this.currentPlayer,
       };
     }
-
-    this.switchPlayer();
-
-    return { success: true };
+    return null;
+  }
+  private handleDraw(): MoveResult | null {
+    if (this.board.isBoardFull()) {
+      this.gameStatus = Status.Draw;
+      return {
+        success: true,
+        message: `Game is a Draw`,
+        isDraw: true,
+      };
+    }
+    return null;
   }
 
   isGameOver(): boolean {
@@ -176,8 +191,8 @@ export class Game {
     return counter;
   }
 
-  private isValidColumn(col: number) {
-    return col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
+  private isValidColumn(column: number) {
+    return column <= Game.MAX_COLUMN && column >= Game.MIN_COLUMN;
   }
 
   private isValidRow(row: number) {
