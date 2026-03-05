@@ -167,8 +167,8 @@ export class Game {
       playerCell: playerInCell,
     };
 
-    const leftCount = this.countToDirectionOnlyHorizonal(lastPlayedCell, DIRECTIONS.Left);
-    const rightCount = this.countToDirectionOnlyHorizonal(lastPlayedCell, DIRECTIONS.Right);
+    const leftCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Left);
+    const rightCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Right);
 
     const horizontalCount = leftCount + rightCount + 1;
 
