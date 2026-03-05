@@ -20,7 +20,7 @@ const playerCoin: Record<Player, Cell> = {
 export class Board {
   rows = BOARD_ROWS;
   columns = BOARD_COLUMNS;
-  grid: Cell[][];
+  private grid: Cell[][];
 
   constructor() {
     this.grid = Array.from({ length: this.rows }, () => Array(this.columns).fill(Cell.Empty));

@@ -31,10 +31,6 @@ export class Game {
   gameStatus: Status;
 
   private static readonly WIN_COUNT = 4;
-  private static readonly MIN_COLUMN = 1;
-  private static readonly MAX_COLUMN = 7;
-  private static readonly MIN_ROW = 1;
-  private static readonly MAX_ROW = 6;
 
   constructor() {
     this.board = new Board();
@@ -79,15 +75,15 @@ export class Game {
       };
     }
 
-    this.result = this.board.placeCoin(column, this.currentPlayer);
-    if (!this.result.success) {
+    const result = this.board.placeCoin(column, this.currentPlayer);
+    if (!result.success) {
       return {
         success: false,
-        message: this.result.message,
+        message: result.message,
       };
     }
 
-    const lastPlacedCoin: Coordinate = { column, row: this.result.row! };
+    const lastPlacedCoin: Coordinate = { column, row: result.row! };
     const winResult = this.handleWin(lastPlacedCoin);
     if (winResult) {
       return winResult;
@@ -192,10 +188,10 @@ export class Game {
   }
 
   private isValidColumn(column: number) {
-    return column <= Game.MAX_COLUMN && column >= Game.MIN_COLUMN;
+    return column <= this.board.columns && column >= 1;
   }
 
   private isValidRow(row: number) {
-    return row <= Game.MAX_ROW && row >= Game.MIN_ROW;
+    return row <= this.board.rows && row >= 1;
   }
 }
