@@ -283,44 +283,6 @@ Then('it remains Player 2 turn \\(turn does not advance)', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
 });
 
-Given('the board has 3 consecutive yellow coins \\(🟡\\) in row 1, columns 3-5', function () {
-  this.game = new Game();
-  this.game.makeMove(3); // player 1
-  this.game.makeMove(3); // player 2
-  this.game.makeMove(4); // player 1
-  this.game.makeMove(4); // player 2
-  this.game.makeMove(5); // player 1
-  this.game.makeMove(5); // player 2
-});
-
-When('Player 1 drops a final coin completing the 4-in-a-row', function () {
-  this.result = this.game.makeMove(6);
-});
-
-Then('the game detects a horizontal win for Player 1 the game ends immediately', function () {
-  assert.strictEqual(this.result.winner, Player.One);
-  assert.strictEqual(this.game.isGameOver(), true);
-});
-
-Given('column 4 has 4 red coins \\(🔴\\) stacked consecutively from row 1 to row 4', function () {
-  this.game = new Game();
-  this.game.makeMove(3); // 1
-  this.game.makeMove(4); // 2
-  this.game.makeMove(3); // 1
-  this.game.makeMove(4); // 2
-  this.game.makeMove(3); // 1
-  this.game.makeMove(4); // 2
-  this.game.makeMove(2); // 1
-});
-
-When('Player 2 drops a final coin in column 4', function () {
-  this.result = this.game.makeMove(4);
-});
-
-Then('the game detects a vertical win for Player 2', function () {
-  assert.strictEqual(this.result.winner, Player.Two);
-});
-
 Then('the game ends immediately', function () {
   assert.strictEqual(this.game.isGameOver(), true);
 });

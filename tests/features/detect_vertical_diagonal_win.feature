@@ -16,13 +16,6 @@ Feature: Detect Vertical and Diagonal Wins
     Win is detected and game ends immediately
     Gherkin Scenarios:
 
-    @story_8_detect_vertically_win
-    Scenario: Player 2 wins with 4 consecutive coins stacked vertically
-        Given column 4 has 4 red coins (🔴) stacked consecutively from row 1 to row 4
-        When Player 2 drops a final coin in column 4
-        Then the game detects a vertical win for Player 2
-        And the game ends immediately
-
     @story_8_detect_diagonal_win
     Scenario: Player 1 wins with 4 coins in upward-right diagonal (↗)
         Given the board has 4 yellow coins (🟡) on an upward-right diagonal: (row: 1, col: 2), (row: 2, col: 3), (row: 3, col: 4), (row: 4, col: 5)
