@@ -372,3 +372,17 @@ Given(
 When('Player 1 drops a final coin in column 2 completing the diagonal', function () {
   this.result = this.game.makeMove(2); // winning move player one
 });
+
+Given('a game setup with moves: {string}', function (setupMoves: string) {
+  this.game = new Game();
+  const moves = setupMoves.split(',').map((m) => parseInt(m.trim()));
+  moves.forEach((column) => this.game.makeMove(column));
+});
+
+When('Player {int} drops a coin in the column {int}', function (player: number, column: number) {
+  this.result = this.game.makeMove(column);
+});
+
+Then('the game detects a win for Player {int}', function (player: number) {
+  assert.strictEqual(this.result.winner, player);
+});

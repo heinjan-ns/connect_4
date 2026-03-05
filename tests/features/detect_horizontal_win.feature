@@ -1,5 +1,5 @@
 
-Feature: Detect Horizontal Win
+Feature: Detect horizontal and vertical Win
     As a game player
     I want to win when I get 4 coins in a row horizontally
     So that I achieve victory through strategic play
@@ -11,8 +11,14 @@ Feature: Detect Horizontal Win
     Win condition is triggered immediately when 4-in-a-row is formed
     Gherkin Scenarios:
 
-    @story_7_detect_horizontal_win
-    Scenario: Player 1 wins with 4 consecutive coins horizontally in the middle of a row
-        Given the board has 3 consecutive yellow coins (🟡) in row 1, columns 3-5
-        When Player 1 drops a final coin completing the 4-in-a-row
-        Then the game detects a horizontal win for Player 1 the game ends immediately
+    Scenario Outline: Player wins with 4-in-a-row
+        Given a game setup with moves: <setup_moves>
+        When Player <player> drops a coin in the column <final_column>
+        Then the game detects a win for Player <player>
+        And the game ends immediately
+
+        Examples:
+            | setup_moves   | player | final_column | win_check  |
+            | "3,3,4,4,5,5" | 1      | 6            | horizontal |
+            | "3,3,5,5,6,6" | 1      | 4            | horizontal |
+            | "3,4,3,4,3,4" | 1      | 3            | vertical   |

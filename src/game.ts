@@ -131,7 +131,9 @@ export class Game {
     const diagonalRightDown = this.countToDirection(lastPlayedCell, DIRECTION.RightDown);
     const diagonalLeftUp = this.countToDirection(lastPlayedCell, DIRECTION.LeftUp);
 
-    return diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
+    const ascDiagionalWin = diagonalRightDown + diagonalLeftUp + 1 >= Game.WIN_COUNT;
+    const descDiaginalWin = diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
+    return ascDiagionalWin || descDiaginalWin;
   }
 
   private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
