@@ -20,4 +20,4 @@ Feature: Drop Coin and Fall to Bottom Position
         Then the board has 42 empty positions out of 42 total
         When Player 1 drops a coin in column 3
         Then the coin lands in row 1 of column 3
-        And the position records a yellow coin (🟡) at coordinates (row: 1, column: 3)
+        And Player 1 has a coin in column 3 row 1

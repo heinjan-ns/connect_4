@@ -156,13 +156,6 @@ Then('the coin lands in row {int} of column {int}', function (row: number, colum
   assert.strictEqual(this.result.success, true);
 });
 
-Then(
-  'the position records a yellow coin \\(🟡\\) at coordinates \\(row: 1, column: 3\\)',
-  function () {
-    assert.strictEqual(this.game.board.getCell({ row: 1, column: 3 }), Cell.Player1);
-  }
-);
-
 Then('the move is accepted', function () {
   assert.strictEqual(this.result.success, true);
 });
