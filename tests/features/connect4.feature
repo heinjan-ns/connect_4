@@ -21,5 +21,5 @@ Feature: Connect 4 Game
         And the rules explain Player 1 goes first, then players alternate
         And the rules explain 4-in-a-row (horizontal, vertical, or diagonal) wins
         And the rules explain a draw occurs when board is full with no winner
-        And the player is prompted to press a key to start the game
+        And the player is prompted to press enter to start the game
         And upon pressing that key, the game begins with a fresh board

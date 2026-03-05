@@ -5,21 +5,18 @@ function main() {
   const game = new Game();
   const input = promptSync.default({ sigint: true }); // you can exit with ctrl-c
 
+  showWelcome(game);
+  input(''); // Wait for Enter key
+
   console.clear();
-  console.log(game.getWelcomeMessage());
-  console.log(game.getRules().join('\n'));
-  console.log(game.getPrompt());
+  gameLoop(game, input);
+  console.log(game.board.consoleOutput());
+}
 
-  // Wait for key press, then show board
-  process.stdin.once('data', () => {
-    game.start();
-    process.exit(0); // for now: exit after showing the board
-  });
-
-  while (true) {
+function gameLoop(game: Game, input: promptSync.Prompt) {
+  while (!game.isGameOver()) {
     console.log(game.board.consoleOutput());
-    const inputString = 'Player ' + game.getCurrentPlayer() + ': Enter colum (1-7): ';
-    const column = parseInt(input(inputString));
+    const column = parseInt(input(`Player ${game.getCurrentPlayer()}: Enter column (1-7): `));
     const result = game.makeMove(column);
     console.clear();
 
@@ -30,12 +27,14 @@ function main() {
     if (result.winner) {
       console.log(result.message);
     }
-
-    if (column === 0 || game.isGameOver()) {
-      console.log(game.board.consoleOutput());
-      process.exit(0);
-    }
   }
+}
+
+function showWelcome(game: Game) {
+  console.clear();
+  console.log(game.getWelcomeMessage());
+  console.log(game.getRules().join('\n'));
+  console.log(game.getPrompt());
 }
 
 main();

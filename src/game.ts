@@ -26,7 +26,6 @@ type MoveResult = { success: boolean; message?: string; winner?: Player; isDraw?
 
 export class Game {
   board: Board;
-  result: { success: boolean; message?: string; row?: number };
   currentPlayer: Player;
   gameStatus: Status;
 
@@ -59,7 +58,7 @@ export class Game {
   }
 
   getPrompt(): string {
-    const prompt = 'Press any key to start';
+    const prompt = 'Press enter to start';
     return prompt;
   }
 
@@ -89,9 +88,9 @@ export class Game {
       return winResult;
     }
 
-    const handleDraw = this.handleDraw();
-    if (handleDraw) {
-      return handleDraw;
+    const drawResult = this.handleDraw();
+    if (drawResult) {
+      return drawResult;
     }
 
     this.switchPlayer();
@@ -153,9 +152,9 @@ export class Game {
     const diagonalRightDown = this.countToDirection(lastPlayedCell, DIRECTION.RightDown);
     const diagonalLeftUp = this.countToDirection(lastPlayedCell, DIRECTION.LeftUp);
 
-    const ascDiagionalWin = diagonalRightDown + diagonalLeftUp + 1 >= Game.WIN_COUNT;
-    const descDiaginalWin = diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
-    return ascDiagionalWin || descDiaginalWin;
+    const ascDiagonalWin = diagonalRightDown + diagonalLeftUp + 1 >= Game.WIN_COUNT;
+    const descDiagonalWin = diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
+    return ascDiagonalWin || descDiagonalWin;
   }
 
   private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {

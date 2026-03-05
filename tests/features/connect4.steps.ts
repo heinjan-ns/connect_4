@@ -106,9 +106,9 @@ Then('the rules explain a draw occurs when board is full with no winner', functi
   );
 });
 
-Then('the player is prompted to press a key to start the game', function () {
+Then('the player is prompted to press enter to start the game', function () {
   const prompt = this.game.getPrompt();
-  assert(prompt.includes('Press any key to start'));
+  assert(prompt.includes('Press enter to start'));
 });
 
 Then('upon pressing that key, the game begins with a fresh board', function () {

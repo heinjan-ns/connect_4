@@ -18,8 +18,8 @@ const playerCoin: Record<Player, Cell> = {
 };
 
 export class Board {
-  rows = BOARD_ROWS;
-  columns = BOARD_COLUMNS;
+  readonly rows = BOARD_ROWS;
+  readonly columns = BOARD_COLUMNS;
   private grid: Cell[][];
 
   constructor() {
@@ -46,10 +46,7 @@ export class Board {
   }
 
   isValidColumn(column: number): boolean {
-    if (column > 0 && column <= this.columns) {
-      return true;
-    }
-    return false;
+    return column >= 1 && column <= this.columns;
   }
 
   isBoardFull(): boolean {
@@ -71,8 +68,7 @@ export class Board {
       rowOutput += this.getRowOutput(rowCounter);
     }
 
-    const output = outputHeader + rowOutput;
-    return output;
+    return outputHeader + rowOutput;
   }
 
   private getRowOutput(rowToOutput: number): string {
