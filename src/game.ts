@@ -110,18 +110,19 @@ export class Game {
   }
 
   private checkWin(coordinate: Coordinate): boolean {
-    const vertWin = this.checkVerticalWin(coordinate);
-    const horizonWin = this.checkHorizontalWin(coordinate);
-    const diagonalWin = this.checkDiagonalWin(coordinate);
-
-    return vertWin || horizonWin || diagonalWin;
-  }
-
-  private checkDiagonalWin(coordinate: Coordinate): boolean {
     const lastPlayedCell: OccupiedCell = {
       ...coordinate,
       playerCell: this.board.getCell(coordinate),
     };
+
+    const vertWin = this.checkVerticalWin(lastPlayedCell);
+    const horizonWin = this.checkHorizontalWin(lastPlayedCell);
+    const diagonalWin = this.checkDiagonalWin(lastPlayedCell);
+
+    return vertWin || horizonWin || diagonalWin;
+  }
+
+  private checkDiagonalWin(lastPlayedCell: OccupiedCell): boolean {
     const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTIONS.RightUp);
     const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTIONS.DownLeft);
 
@@ -145,27 +146,16 @@ export class Game {
     return counter;
   }
 
-  private checkVerticalWin(coordinate: Coordinate): boolean {
-    const lastPlayedCell: OccupiedCell = {
-      ...coordinate,
-      playerCell: this.board.getCell(coordinate),
-    };
+  private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
     const vertCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Down);
     return vertCount + 1 >= Game.WIN_COUNT;
   }
 
-  private checkHorizontalWin(coordinate: Coordinate): boolean {
-    const lastPlayedCell: OccupiedCell = {
-      ...coordinate,
-      playerCell: this.board.getCell(coordinate),
-    };
-
+  private checkHorizontalWin(lastPlayedCell: OccupiedCell): boolean {
     const leftCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Left);
     const rightCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Right);
 
-    const horizontalCount = leftCount + rightCount + 1;
-
-    return horizontalCount >= Game.WIN_COUNT;
+    return leftCount + rightCount + 1 >= Game.WIN_COUNT;
   }
 
   private isValidColumn(col: number) {
