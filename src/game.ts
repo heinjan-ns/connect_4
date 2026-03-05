@@ -13,6 +13,10 @@ type Direction = { row: number; column: number };
 const DIRECTIONS = {
   Right: { row: 0, column: 1 },
   Left: { row: 0, column: -1 },
+  Up: { row: 1, column: 0 },
+  Down: { row: -1, column: 0 },
+  RightUp: { row: 1, column: 1 },
+  DownLeft: { row: -1, column: -1 },
 };
 
 type MoveResult = { success: boolean; message?: string; winner?: Player };
@@ -118,22 +122,22 @@ export class Game {
       ...coordinate,
       playerCell: playerInCell,
     };
-    const diagonalRightUp = this.countDiagonalDirection(lastPlayedCell, 1);
-    const diagonalLeftDown = this.countDiagonalDirection(lastPlayedCell, -1);
+    const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTIONS.RightUp);
+    const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTIONS.DownLeft);
 
     const diagonalCount = 1 + diagonalRightUp + diagonalLeftDown;
     return diagonalCount >= Game.WIN_COUNT;
   }
-  private countDiagonalDirection({ column, row, playerCell }: OccupiedCell, direction: number) {
+  private countToDirection({ column, row, playerCell }: OccupiedCell, direction: Direction) {
     let counter = 0;
-    let rowToCheck = row + direction;
-    let columnToCheck = column + direction;
+    let rowToCheck = row + direction.row;
+    let columnToCheck = column + direction.column;
 
-    while (rowToCheck >= 1 && rowToCheck <= 6 && columnToCheck >= 1 && columnToCheck <= 7) {
+    while (this.isValidRow(rowToCheck) && this.isValidColumn(columnToCheck)) {
       if (this.board.getCell({ row: rowToCheck, column: columnToCheck }) === playerCell) {
         counter++;
-        rowToCheck += direction;
-        columnToCheck += direction;
+        rowToCheck += direction.row;
+        columnToCheck += direction.column;
       } else {
         break;
       }
@@ -145,7 +149,7 @@ export class Game {
     const playerInCell = this.board.getCell(coordinate);
 
     let downCount = 1;
-    for (let row = coordinate.row - 1; row >= 1; row--) {
+    for (let row = coordinate.row - 1; this.isValidRow(row); row--) {
       if (this.board.getCell({ row: row, column: coordinate.column }) === playerInCell) {
         downCount++;
       } else {
@@ -163,15 +167,18 @@ export class Game {
       playerCell: playerInCell,
     };
 
-    const leftCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Left);
-    const rightCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Right);
+    const leftCount = this.countToDirectionOnlyHorizonal(lastPlayedCell, DIRECTIONS.Left);
+    const rightCount = this.countToDirectionOnlyHorizonal(lastPlayedCell, DIRECTIONS.Right);
 
     const horizontalCount = leftCount + rightCount + 1;
 
     return horizontalCount >= Game.WIN_COUNT;
   }
 
-  private countToDirection({ column, row, playerCell }: OccupiedCell, direction: Direction) {
+  private countToDirectionOnlyHorizonal(
+    { column, row, playerCell }: OccupiedCell,
+    direction: Direction
+  ) {
     let count = 0;
     for (
       let col = column + direction.column;
@@ -189,5 +196,9 @@ export class Game {
 
   private isValidColumn(col: number) {
     return col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
+  }
+
+  private isValidRow(row: number) {
+    return row <= 6 && row >= 1;
   }
 }
