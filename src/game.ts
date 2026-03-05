@@ -175,15 +175,19 @@ export class Game {
     let count = 0;
     for (
       let col = column + direction.column;
-      col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
+      this.isValidColumn(col);
       col = col + direction.column
     ) {
-      if (this.board.getCell({ row, column: col }) === playerCell) {
+      if (this.board.getCell({ row: row, column: col }) === playerCell) {
         count++;
       } else {
         break;
       }
     }
     return count;
+  }
+
+  private isValidColumn(col: number) {
+    return col <= Game.MAX_COLUMN && col >= Game.MIN_COLUMN;
   }
 }
