@@ -187,10 +187,6 @@ Given('the board is empty', function () {
   this.game.start();
 });
 
-// When('Player 1 drops a coin in column 3', function () {
-//   this.result = this.game.makeMove(3);
-// });
-
 Then('the coin lands in row 1 of column 3', function () {
   assert.strictEqual(this.result.success, true);
 });
@@ -248,54 +244,6 @@ Then('it remains Player 2 turn', function () {
 
 Then('the game ends immediately', function () {
   assert.strictEqual(this.game.isGameOver(), true);
-});
-
-Given(
-  'the board has 4 yellow coins \\(🟡\\) on an upward-right diagonal: \\(row: 1, col: 2\\), \\(row: 2, col: 3\\), \\(row: 3, col: 4\\), \\(row: 4, col: 5\\)',
-  function () {
-    this.game = new Game();
-    this.game.makeMove(4); // 1
-    this.game.makeMove(3); // 2
-    this.game.makeMove(2); // 1
-    this.game.makeMove(4); // 2
-    this.game.makeMove(3); // 1
-    this.game.makeMove(5); // 2
-    this.game.makeMove(4); // 1
-    this.game.makeMove(5); // 2
-    this.game.makeMove(6); // 1
-    this.game.makeMove(5); // 2
-  }
-);
-
-When('Player 1 drops a final coin completing the diagonal', function () {
-  this.result = this.game.makeMove(5); // winning move player one
-});
-
-Then('the game detects a diagonal win for Player 1', function () {
-  assert.strictEqual(this.result.winner, Player.One);
-});
-
-Given(
-  'the board has 4 yellow coins \\(🟡\\) on an upward-right diagonal: \\(row: 2, col: 3\\), \\(row: 3, col: 4\\), \\(row: 4, col: 5\\)',
-  function () {
-    this.game = new Game();
-    this.game.makeMove(4); // 1
-    this.game.makeMove(3); // 2
-    this.game.makeMove(7); // 1
-    this.game.makeMove(4); // 2
-    this.game.makeMove(3); // 1
-    this.game.makeMove(5); // 2
-    this.game.makeMove(4); // 1
-    this.game.makeMove(5); // 2
-    this.game.makeMove(6); // 1
-    this.game.makeMove(5); // 2
-    this.game.makeMove(5); // 1
-    this.game.makeMove(7); // 2
-  }
-);
-
-When('Player 1 drops a final coin in column 2 completing the diagonal', function () {
-  this.result = this.game.makeMove(2); // winning move player one
 });
 
 Given('a game setup with moves: {string}', function (setupMoves: string) {
