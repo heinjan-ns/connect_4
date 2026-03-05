@@ -12,7 +12,7 @@ Feature: Accept Player Input for Column Selection
     @story_3_player_input
     Scenario: Player enters valid column number
         Given it is Player 1 turn
-        When Player 1 enters column 4
+        When Player 1 drops a coin in column 4
         Then the column number 4 is accepted
         And the game processes the move to drop a coin
 

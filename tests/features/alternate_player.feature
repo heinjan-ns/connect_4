@@ -16,7 +16,7 @@ Feature: As a game player
         Given a new game has been initialized
         When the game is ready for play
         Then the game indicates "Player 1's turn" (🟡)
-        And Player 1 drops a coin
+        And Player 1 drops a coin in column 1
         And the game indicates "Player 2's turn" (🔴)
-        And Player 2 drops a coin
+        And Player 2 drops a coin in column 1
         Then the game again indicates "Player 1's turn" (🟡)

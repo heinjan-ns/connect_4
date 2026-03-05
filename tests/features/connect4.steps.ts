@@ -153,10 +153,6 @@ Given('it is Player 1 turn', function () {
   this.game = new Game();
 });
 
-When('Player 1 enters column 4', function () {
-  this.result = this.game.makeMove(4);
-});
-
 Then('the column number 4 is accepted', function () {
   assert.strictEqual(this.result.success, true);
 });
@@ -214,16 +210,8 @@ Then('the game indicates "Player 1\'s turn" \\(🟡\\)', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.One);
 });
 
-Then('Player 1 drops a coin', function () {
-  this.game.makeMove(1);
-});
-
 Then('the game indicates "Player 2\'s turn" \\(🔴\\)', function () {
   assert.strictEqual(this.game.getCurrentPlayer(), Player.Two);
-});
-
-Then('Player 2 drops a coin', function () {
-  this.game.makeMove(1);
 });
 
 Then('the game again indicates "Player 1\'s turn" \\(🟡\\)', function () {
