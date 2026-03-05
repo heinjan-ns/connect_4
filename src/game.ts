@@ -10,13 +10,15 @@ enum Status {
 
 type Direction = { row: number; column: number };
 
-const DIRECTIONS = {
+const DIRECTION = {
   Right: { row: 0, column: 1 },
   Left: { row: 0, column: -1 },
   Up: { row: 1, column: 0 },
   Down: { row: -1, column: 0 },
   RightUp: { row: 1, column: 1 },
-  DownLeft: { row: -1, column: -1 },
+  LeftDown: { row: -1, column: -1 },
+  RightDown: { row: -1, column: 1 },
+  LeftUp: { row: 1, column: -1 },
 };
 
 type MoveResult = { success: boolean; message?: string; winner?: Player };
@@ -123,12 +125,27 @@ export class Game {
   }
 
   private checkDiagonalWin(lastPlayedCell: OccupiedCell): boolean {
-    const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTIONS.RightUp);
-    const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTIONS.DownLeft);
+    const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTION.RightUp);
+    const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTION.LeftDown);
 
-    const diagonalCount = 1 + diagonalRightUp + diagonalLeftDown;
-    return diagonalCount >= Game.WIN_COUNT;
+    const diagonalRightDown = this.countToDirection(lastPlayedCell, DIRECTION.RightDown);
+    const diagonalLeftUp = this.countToDirection(lastPlayedCell, DIRECTION.LeftUp);
+
+    return diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
   }
+
+  private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
+    const vertCount = this.countToDirection(lastPlayedCell, DIRECTION.Down);
+    return vertCount + 1 >= Game.WIN_COUNT;
+  }
+
+  private checkHorizontalWin(lastPlayedCell: OccupiedCell): boolean {
+    const leftCount = this.countToDirection(lastPlayedCell, DIRECTION.Left);
+    const rightCount = this.countToDirection(lastPlayedCell, DIRECTION.Right);
+
+    return leftCount + rightCount + 1 >= Game.WIN_COUNT;
+  }
+
   private countToDirection({ column, row, playerCell }: OccupiedCell, direction: Direction) {
     let counter = 0;
     let rowToCheck = row + direction.row;
@@ -144,18 +161,6 @@ export class Game {
       }
     }
     return counter;
-  }
-
-  private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
-    const vertCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Down);
-    return vertCount + 1 >= Game.WIN_COUNT;
-  }
-
-  private checkHorizontalWin(lastPlayedCell: OccupiedCell): boolean {
-    const leftCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Left);
-    const rightCount = this.countToDirection(lastPlayedCell, DIRECTIONS.Right);
-
-    return leftCount + rightCount + 1 >= Game.WIN_COUNT;
   }
 
   private isValidColumn(col: number) {
