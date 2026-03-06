@@ -67,13 +67,6 @@ export class Game {
   }
 
   makeMove(column: number): MoveResult {
-    if (!this.board.isValidColumn(column)) {
-      return {
-        success: false,
-        message: '❌ Please select a valid column (1-7)',
-      };
-    }
-
     const result = this.board.placeCoin(column, this.currentPlayer);
     if (!result.success) {
       return {
@@ -84,6 +77,7 @@ export class Game {
 
     const lastPlacedCoin: Coordinate = { column, row: result.row! };
     const winResult = this.handleWin(lastPlacedCoin);
+
     if (winResult) {
       return winResult;
     }

@@ -27,6 +27,13 @@ export class Board {
   }
 
   placeCoin(column: number, player: Player): { success: boolean; row?: number; message?: string } {
+    if (!this.isValidColumn(column)) {
+      return {
+        success: false,
+        message: '❌ Please select a valid column (1-7)',
+      };
+    }
+
     for (let rowIndex = 1; rowIndex <= this.rows; rowIndex++) {
       if (this.getCell({ row: rowIndex, column }) === Cell.Empty) {
         this.setCell({ row: rowIndex, column, player });
