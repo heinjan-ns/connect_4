@@ -1,0 +1,37 @@
+FROM node:20-alpine AS test
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm test
+
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN CI=true npm ci
+
+COPY --from=test /app/src ./src
+COPY --from=test /app/tsconfig.json ./
+RUN npm run build
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN CI=true npm ci --omit=dev
+
+COPY --from=build /app/dist ./dist
+
+# Non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /app
+USER nodejs
+RUN ls dist
+CMD ["node", "dist/main.js"]
