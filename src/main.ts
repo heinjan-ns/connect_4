@@ -1,43 +1,63 @@
-import * as promptSync from 'prompt-sync';
+import * as readline from 'readline';
 import { Game } from './game';
 
 function main() {
   const game = new Game();
-  const input = promptSync.default({ sigint: true }); // you can exit with ctrl-c
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
   showWelcome(game);
-  input(''); // Wait for Enter key
 
-  console.clear();
-  gameLoop(game, input);
+  rl.question('', () => {
+    console.clear();
+    gameLoop(game, rl);
+  });
 }
 
-export function gameLoop(game: Game, input: promptSync.Prompt) {
+export function gameLoop(game: Game, rl: readline.Interface) {
   let message: string = '';
-  while (!game.isGameOver()) {
+
+  const promptMove = () => {
+    if (game.isGameOver()) {
+      rl.close();
+      return;
+    }
+
     showBoard(game, message);
     message = '';
 
-    const column = parseInt(
-      input(
-        `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `
-      )
+    rl.question(
+      `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `,
+      (answer) => {
+        const column = parseInt(answer);
+        const result = game.makeMove(column);
+
+        if (!result.success) {
+          message = result.message!;
+          promptMove();
+          return;
+        }
+
+        if (result.winner) {
+          showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+          rl.close();
+          return;
+        }
+
+        if (result.isDraw) {
+          showBoard(game, `Game is a Draw - all positions filled!`);
+          rl.close();
+          return;
+        }
+
+        promptMove();
+      }
     );
-    const result = game.makeMove(column);
+  };
 
-    if (!result.success) {
-      message = result.message!;
-      continue;
-    }
-
-    if (result.winner) {
-      showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
-    }
-
-    if (result.isDraw) {
-      showBoard(game, `Game is a Draw - all positions filled!`);
-    }
-  }
+  promptMove();
 }
 
 function showBoard(game: Game, message = '') {
