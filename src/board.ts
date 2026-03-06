@@ -52,7 +52,7 @@ export class Board {
     this.grid[row - 1][column - 1] = playerCoin[player];
   }
 
-  isValidColumn(column: number): boolean {
+  private isValidColumn(column: number): boolean {
     return column >= 1 && column <= this.columns;
   }
 
