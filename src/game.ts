@@ -67,6 +67,13 @@ export class Game {
   }
 
   makeMove(column: number): MoveResult {
+    if (this.gameStatus !== Status.InProgress) {
+      return {
+        success: false,
+        message: `Game is already finished`,
+      };
+    }
+
     const result = this.board.placeCoin(column, this.currentPlayer);
     if (!result.success) {
       return {
@@ -96,7 +103,7 @@ export class Game {
       this.gameStatus = Status.Won;
       return {
         success: true,
-        message: `Player ${this.currentPlayer} has won`,
+        //message: `Player ${this.currentPlayer} has won`,
         winner: this.currentPlayer,
       };
     }

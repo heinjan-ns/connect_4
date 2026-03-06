@@ -48,14 +48,6 @@ export class Board {
     return this.grid[row - 1][column - 1];
   }
 
-  private setCell({ row, column, player }: { row: number; column: number; player: Player }): void {
-    this.grid[row - 1][column - 1] = playerCoin[player];
-  }
-
-  private isValidColumn(column: number): boolean {
-    return column >= 1 && column <= this.columns;
-  }
-
   isBoardFull(): boolean {
     for (let columnIndex = 1; columnIndex <= this.columns; columnIndex++) {
       if (this.getCell({ row: this.rows, column: columnIndex }) === Cell.Empty) {
@@ -76,6 +68,14 @@ export class Board {
     }
 
     return outputHeader + rowOutput;
+  }
+
+  private setCell({ row, column, player }: { row: number; column: number; player: Player }): void {
+    this.grid[row - 1][column - 1] = playerCoin[player];
+  }
+
+  private isValidColumn(column: number): boolean {
+    return column >= 1 && column <= this.columns;
   }
 
   private getRowOutput(rowToOutput: number): string {

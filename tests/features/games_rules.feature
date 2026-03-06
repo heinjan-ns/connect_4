@@ -59,6 +59,16 @@ Feature: Game Rules and Turn Management
             | setup_moves     | player | column | outcome                              |
             | "5,5,5,5,5,5,1" | 2      | 5      | the game displays "Column 5 is full" |
 
+    Scenario Outline: Player cannot drop coin if game is finished
+        Given a game setup with moves: <setup_moves>
+        When Player <player> drops a coin in column <column>
+        Then <outcome>
+        And the move is rejected with an error message
+
+        Examples:
+            | setup_moves     | player | column | outcome                                    |
+            | "1,2,1,2,1,2,1" | 2      | 5      | the move is rejected with an error message |
+
     @story_9_Detect_Draw_Condition
     Scenario Outline: Game ends in draw when board is full with no winner
         Given a game setup with moves: <setup_moves>

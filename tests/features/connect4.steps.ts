@@ -195,11 +195,6 @@ Given('a game setup with moves: {string}', function (setupMoves: string) {
   moves.forEach((column) => {
     const result = this.game.makeMove(column);
     assert.strictEqual(result.success, true, `Setup move failed for column ${column}`);
-    assert.strictEqual(
-      this.game.isGameOver(),
-      false,
-      `Game is over, setup failed for column ${column}`
-    );
   });
 });
 

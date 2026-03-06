@@ -10,7 +10,6 @@ function main() {
 
   console.clear();
   gameLoop(game, input);
-  console.log(game.board.consoleOutput());
 }
 
 function gameLoop(game: Game, input: promptSync.Prompt) {
@@ -21,11 +20,13 @@ function gameLoop(game: Game, input: promptSync.Prompt) {
     console.clear();
 
     if (!result.success) {
+      console.log(game.board.consoleOutput());
       console.log(result.message);
     }
 
     if (result.winner) {
-      console.log(result.message);
+      console.log(game.board.consoleOutput());
+      console.log(`Player ${result.winner} has won`);
     }
   }
 }
