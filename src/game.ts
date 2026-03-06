@@ -1,6 +1,5 @@
-import { Board, Cell, Player } from './board';
+import { Board, Cell, Player, Coordinate } from './board';
 
-type Coordinate = { column: number; row: number };
 type OccupiedCell = Coordinate & { playerCell: Cell };
 
 enum Status {
@@ -9,7 +8,7 @@ enum Status {
   Draw,
 }
 
-type Direction = { row: number; column: number };
+type Direction = { row: -1 | 0 | 1; column: -1 | 0 | 1 };
 
 const DIRECTION = {
   Right: { row: 0, column: 1 },
@@ -20,7 +19,7 @@ const DIRECTION = {
   LeftDown: { row: -1, column: -1 },
   RightDown: { row: -1, column: 1 },
   LeftUp: { row: 1, column: -1 },
-};
+} as const;
 
 type MoveResult = { success: boolean; message?: string; winner?: Player; isDraw?: boolean };
 

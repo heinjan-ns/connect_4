@@ -236,3 +236,10 @@ Then('the final board is displayed', function () {
 Then('the message "Game is a Draw - all positions filled!" is displayed', function () {
   // how to test this?
 });
+
+Given('Player 2 has just completed 4-in-a-row', function () {
+  this.game = new Game();
+  const drawMoves = '1,2,1,2,1,2,5';
+  drawMoves.split(',').forEach((col) => this.game.makeMove(parseInt(col.trim())));
+  this.result = this.game.makeMove(2);
+});

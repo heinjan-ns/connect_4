@@ -9,6 +9,8 @@ export enum Player {
   Two = 2,
 }
 
+export type Coordinate = { column: number; row: number };
+
 export const BOARD_COLUMNS = 7;
 export const BOARD_ROWS = 6;
 
