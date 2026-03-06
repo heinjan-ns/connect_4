@@ -175,8 +175,10 @@ export class Game {
   }
 
   private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
-    const vertCount = this.countToDirection(lastPlayedCell, DIRECTION.Down);
-    return vertCount + 1 >= Game.WIN_COUNT;
+    const vertCountDown = this.countToDirection(lastPlayedCell, DIRECTION.Down);
+    const vertCountUp = this.countToDirection(lastPlayedCell, DIRECTION.Up);
+
+    return vertCountDown + vertCountUp + 1 >= Game.WIN_COUNT;
   }
 
   private checkHorizontalWin(lastPlayedCell: OccupiedCell): boolean {
