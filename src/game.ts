@@ -33,6 +33,7 @@ export class Game {
   board: Board;
   currentPlayer: Player;
   gameStatus: Status;
+  winningCells: Coordinate[];
 
   private static readonly WIN_COUNT = 4;
 
@@ -40,6 +41,7 @@ export class Game {
     this.board = new Board();
     this.currentPlayer = Player.One;
     this.gameStatus = Status.InProgress;
+    this.winningCells = [];
   }
 
   start() {
@@ -150,21 +152,26 @@ export class Game {
 
     const vertWin = this.checkVerticalWin(lastPlayedCell);
     const horizonWin = this.checkHorizontalWin(lastPlayedCell);
-    const diagonalWin = this.checkDiagonalWin(lastPlayedCell);
+    const ascDiagonalWin = this.checkAscDiagonalWin(lastPlayedCell);
+    const descDiagonalWin = this.checkDescDiagonalWin(lastPlayedCell);
 
-    return vertWin || horizonWin || diagonalWin;
+    return vertWin || horizonWin || ascDiagonalWin || descDiagonalWin;
   }
 
-  private checkDiagonalWin(lastPlayedCell: OccupiedCell): boolean {
-    const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTION.RightUp);
-    const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTION.LeftDown);
-
+  private checkAscDiagonalWin(lastPlayedCell: OccupiedCell): boolean {
     const diagonalRightDown = this.countToDirection(lastPlayedCell, DIRECTION.RightDown);
     const diagonalLeftUp = this.countToDirection(lastPlayedCell, DIRECTION.LeftUp);
 
     const ascDiagonalWin = diagonalRightDown + diagonalLeftUp + 1 >= Game.WIN_COUNT;
+    return ascDiagonalWin;
+  }
+
+  private checkDescDiagonalWin(lastPlayedCell: OccupiedCell): boolean {
+    const diagonalRightUp = this.countToDirection(lastPlayedCell, DIRECTION.RightUp);
+    const diagonalLeftDown = this.countToDirection(lastPlayedCell, DIRECTION.LeftDown);
+
     const descDiagonalWin = diagonalRightUp + diagonalLeftDown + 1 >= Game.WIN_COUNT;
-    return ascDiagonalWin || descDiagonalWin;
+    return descDiagonalWin;
   }
 
   private checkVerticalWin(lastPlayedCell: OccupiedCell): boolean {
