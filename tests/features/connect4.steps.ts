@@ -215,5 +215,24 @@ Then('the game declares "Game is a Draw"', function () {
 });
 
 Then('the game ends without a winner', function () {
-  // TODO: implement game over without winner check
+  assert.strictEqual(this.result.isDraw, true);
+  assert.strictEqual(this.game.isGameOver(), true);
+});
+
+Given('the board is completely full with no 4-in-a-row for either player', function () {
+  this.game = new Game();
+  const drawMoves =
+    '1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,2';
+  drawMoves.split(',').forEach((col) => this.game.makeMove(parseInt(col.trim())));
+  this.result = this.game.makeMove(5);
+});
+
+Then('the final board is displayed', function () {
+  // how to test this?
+  //const boardOutput = this.game.board.consoleOutput();
+  //assert.ok(boardOutput.length > 0);
+});
+
+Then('the message "Game is a Draw - all positions filled!" is displayed', function () {
+  // how to test this?
 });
