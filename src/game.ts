@@ -67,7 +67,7 @@ export class Game {
   }
 
   makeMove(column: number): MoveResult {
-    if (this.gameStatus !== Status.InProgress) {
+    if (this.isGameOver()) {
       return {
         success: false,
         message: `Game is already finished`,

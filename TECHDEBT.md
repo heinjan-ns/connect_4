@@ -1,8 +1,8 @@
 # Techdebt connect_4
 
-[ ] makeMove throws column is full when placeCoin is false, is that OK?
 [ ] in test we do game.board, this is the wrong level.
 [ ] outputHeader is static
+[ ] 'the game displays "Column 5 is full"' is hardcoded message in tests
 
 # DONE
 

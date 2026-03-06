@@ -30,7 +30,7 @@ export class Board {
     if (!this.isValidColumn(column)) {
       return {
         success: false,
-        message: '❌ Please select a valid column (1-7)',
+        message: `❌ Please select a valid column (1 - ${this.columns})`,
       };
     }
 
@@ -41,7 +41,7 @@ export class Board {
       }
     }
 
-    return { success: false, message: `Column ${column} is full` };
+    return { success: false, message: `❌ Column ${column} is full` };
   }
 
   getCell({ row, column }: { row: number; column: number }): Cell {

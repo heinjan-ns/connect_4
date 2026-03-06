@@ -169,7 +169,7 @@ Given('a new game has been initialized', function () {
 });
 
 Then('the game displays "Column 5 is full"', function () {
-  assert.strictEqual(this.result.message, 'Column 5 is full');
+  assert.strictEqual(this.result.message, '❌ Column 5 is full');
 });
 
 Then('Player {int} is prompted to select a valid column', function (player: number) {

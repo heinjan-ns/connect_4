@@ -14,21 +14,28 @@ function main() {
 
 function gameLoop(game: Game, input: promptSync.Prompt) {
   while (!game.isGameOver()) {
-    console.log(game.board.consoleOutput());
+    showBoard(game);
     const column = parseInt(input(`Player ${game.getCurrentPlayer()}: Enter column (1-7): `));
     const result = game.makeMove(column);
     console.clear();
 
     if (!result.success) {
-      console.log(game.board.consoleOutput());
       console.log(result.message);
     }
 
     if (result.winner) {
-      console.log(game.board.consoleOutput());
+      showBoard(game);
       console.log(`Player ${result.winner} has won`);
     }
+    if (result.isDraw) {
+      showBoard(game);
+      console.log(`Game is a Draw - All positions filled!`);
+    }
   }
+}
+
+function showBoard(game: Game) {
+  console.log(game.board.consoleOutput());
 }
 
 function showWelcome(game: Game) {
