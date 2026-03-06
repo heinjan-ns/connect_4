@@ -12,30 +12,40 @@ function main() {
   gameLoop(game, input);
 }
 
-function gameLoop(game: Game, input: promptSync.Prompt) {
+export function gameLoop(game: Game, input: promptSync.Prompt) {
+  let message: string = '';
   while (!game.isGameOver()) {
-    showBoard(game);
-    const column = parseInt(input(`Player ${game.getCurrentPlayer()}: Enter column (1-7): `));
+    showBoard(game, message);
+    message = '';
+
+    const column = parseInt(
+      input(
+        `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `
+      )
+    );
     const result = game.makeMove(column);
-    console.clear();
 
     if (!result.success) {
-      console.log(result.message);
+      message = result.message!;
+      continue;
     }
 
     if (result.winner) {
-      showBoard(game);
-      console.log(`Player ${result.winner} has won`);
+      showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
     }
+
     if (result.isDraw) {
-      showBoard(game);
-      console.log(`Game is a Draw - All positions filled!`);
+      showBoard(game, `Game is a Draw - all positions filled!`);
     }
   }
 }
 
-function showBoard(game: Game) {
+function showBoard(game: Game, message = '') {
+  console.clear();
   console.log(game.board.consoleOutput());
+  if (message) {
+    console.log(`\n${message}\n`);
+  }
 }
 
 function showWelcome(game: Game) {

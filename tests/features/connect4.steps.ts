@@ -173,8 +173,12 @@ Then('the game displays "Column 5 is full"', function () {
 });
 
 Then('Player {int} is prompted to select a valid column', function (player: number) {
-  // prompt is always shown in the UI, no assert here
   assert.strictEqual(this.game.getCurrentPlayer(), player);
+  if (player === 1) {
+    assert.strictEqual(this.game.getCurrentPlayerCoin(), Cell.Player1);
+  } else {
+    assert.strictEqual(this.game.getCurrentPlayerCoin(), Cell.Player2);
+  }
 });
 
 Then('it remains Player {int} turn', function (player: number) {

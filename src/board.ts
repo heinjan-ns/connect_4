@@ -12,7 +12,7 @@ export enum Player {
 export const BOARD_COLUMNS = 7;
 export const BOARD_ROWS = 6;
 
-const playerCoin: Record<Player, Cell> = {
+export const playerCoin: Record<Player, Cell> = {
   [Player.One]: Cell.Player1,
   [Player.Two]: Cell.Player2,
 };
@@ -30,7 +30,7 @@ export class Board {
     if (!this.isValidColumn(column)) {
       return {
         success: false,
-        message: `❌ Please select a valid column (1 - ${this.columns})`,
+        message: `❌ ${column} is not a valid column.`,
       };
     }
 

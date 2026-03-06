@@ -62,6 +62,10 @@ export class Game {
     return prompt;
   }
 
+  getCurrentPlayerCoin(): string {
+    return this.currentPlayer === Player.One ? Cell.Player1 : Cell.Player2;
+  }
+
   getCurrentPlayer(): Player {
     return this.currentPlayer;
   }
@@ -103,7 +107,6 @@ export class Game {
       this.gameStatus = Status.Won;
       return {
         success: true,
-        //message: `Player ${this.currentPlayer} has won`,
         winner: this.currentPlayer,
       };
     }
