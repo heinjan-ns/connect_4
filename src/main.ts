@@ -1,5 +1,6 @@
 import * as readline from 'readline';
 import { Game } from './game';
+import { Coordinate } from './board';
 
 function main() {
   const game = new Game();
@@ -41,7 +42,11 @@ export function gameLoop(game: Game, rl: readline.Interface) {
         }
 
         if (result.winner) {
-          showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+          showWinningBoard(
+            game,
+            `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`,
+            result.winningCells!
+          );
           rl.close();
           return;
         }
@@ -63,6 +68,14 @@ export function gameLoop(game: Game, rl: readline.Interface) {
 function showBoard(game: Game, message = '') {
   console.clear();
   console.log(game.board.consoleOutput());
+  if (message) {
+    console.log(`\n${message}\n`);
+  }
+}
+
+function showWinningBoard(game: Game, message = '', coordinate: Coordinate) {
+  console.clear();
+  console.log(game.board.consoleOutputWinner(coordinate));
   if (message) {
     console.log(`\n${message}\n`);
   }

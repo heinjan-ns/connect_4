@@ -34,11 +34,11 @@ Then('columns are labeled 1 through 7', function () {
   }
   assert.strictEqual(
     lines[1],
-    `6 ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty}`
+    `6 ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty} `
   );
   assert.strictEqual(
     lines[6],
-    `1 ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty} ${Cell.Empty}`
+    `1 ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty}  ${Cell.Empty} `
   );
 });
 

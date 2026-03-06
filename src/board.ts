@@ -61,12 +61,29 @@ export class Board {
 
   consoleOutput(): string {
     // space-padding for nice formatting, otherwise the ◯s aren't aligned well
-    const outputHeader = '   1  2  3  4  5  6  7';
+    const outputHeader = '   1   2   3   4   5   6   7';
     let rowOutput = '';
     for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
       rowOutput += '\n';
       rowOutput += rowCounter.toString();
       rowOutput += this.getRowOutput(rowCounter);
+    }
+
+    return outputHeader + rowOutput;
+  }
+
+  consoleOutputWinner(coordinate: Coordinate): string {
+    // space-padding for nice formatting, otherwise the ◯s aren't aligned well
+    const outputHeader = '   1   2   3   4   5   6   7';
+    let rowOutput = '';
+    for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
+      rowOutput += '\n';
+      rowOutput += rowCounter.toString();
+      if (rowCounter === coordinate.row) {
+        rowOutput += this.getRowOutput(rowCounter, coordinate.column);
+      } else {
+        rowOutput += this.getRowOutput(rowCounter);
+      }
     }
 
     return outputHeader + rowOutput;
@@ -80,10 +97,14 @@ export class Board {
     return column >= 1 && column <= this.columns;
   }
 
-  private getRowOutput(rowToOutput: number): string {
+  private getRowOutput(rowToOutput: number, winningColumn?: number): string {
     let rowOutput = '';
     for (let columnCounter = 1; columnCounter <= this.columns; columnCounter++) {
-      rowOutput += ' ' + this.getCell({ row: rowToOutput, column: columnCounter });
+      if (columnCounter === winningColumn) {
+        rowOutput += `[${this.getCell({ row: rowToOutput, column: columnCounter })}]`;
+      } else {
+        rowOutput += ` ${this.getCell({ row: rowToOutput, column: columnCounter })} `;
+      }
     }
     return rowOutput;
   }

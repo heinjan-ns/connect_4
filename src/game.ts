@@ -21,7 +21,13 @@ const DIRECTION = {
   LeftUp: { row: 1, column: -1 },
 } as const;
 
-type MoveResult = { success: boolean; message?: string; winner?: Player; isDraw?: boolean };
+type MoveResult = {
+  success: boolean;
+  message?: string;
+  winner?: Player;
+  winningCells?: Coordinate;
+  isDraw?: boolean;
+};
 
 export class Game {
   board: Board;
@@ -107,6 +113,7 @@ export class Game {
       return {
         success: true,
         winner: this.currentPlayer,
+        winningCells: coordinate,
       };
     }
     return null;
