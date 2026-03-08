@@ -8,7 +8,8 @@ enum Status {
   Draw,
 }
 
-type Direction = { row: -1 | 0 | 1; column: -1 | 0 | 1 };
+type Direction = { row: number; column: number };
+type DirectionPair = readonly [Direction, Direction];
 
 const DIRECTION = {
   Right: { row: 0, column: 1 },
@@ -19,6 +20,13 @@ const DIRECTION = {
   LeftDown: { row: -1, column: -1 },
   RightDown: { row: -1, column: 1 },
   LeftUp: { row: 1, column: -1 },
+};
+
+const DIRECTION_PAIRS = {
+  Horizontal: [
+    { row: 0, column: -1 }, // Left
+    { row: 0, column: 1 }, // Right
+  ],
 } as const;
 
 type MoveResult = {
@@ -151,7 +159,7 @@ export class Game {
     };
 
     const vertWin = this.checkVerticalWin(lastPlayedCell);
-    const horizonWin = this.checkHorizontalWin(lastPlayedCell);
+    const horizonWin = this.checkHorizontalWin(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
     const ascDiagonalWin = this.checkAscDiagonalWin(lastPlayedCell);
     const descDiagonalWin = this.checkDescDiagonalWin(lastPlayedCell);
 
@@ -181,9 +189,9 @@ export class Game {
     return vertCountDown + vertCountUp + 1 >= Game.WIN_COUNT;
   }
 
-  private checkHorizontalWin(lastPlayedCell: OccupiedCell): boolean {
-    const leftCount = this.countToDirection(lastPlayedCell, DIRECTION.Left);
-    const rightCount = this.countToDirection(lastPlayedCell, DIRECTION.Right);
+  private checkHorizontalWin(lastPlayedCell: OccupiedCell, directionPair: DirectionPair): boolean {
+    const leftCount = this.countToDirection(lastPlayedCell, directionPair[0]);
+    const rightCount = this.countToDirection(lastPlayedCell, directionPair[1]);
 
     return leftCount + rightCount + 1 >= Game.WIN_COUNT;
   }
