@@ -28,7 +28,7 @@ const DIRECTION_PAIRS = {
     { row: 1, column: -1 }, // LeftUp
     { row: -1, column: 1 }, // RightDown
   ],
-} as const;
+} as const satisfies Record<string, DirectionPair>;
 
 type MoveResult = {
   success: boolean;
