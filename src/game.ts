@@ -34,7 +34,6 @@ type MoveResult = {
   success: boolean;
   message?: string;
   winner?: Player;
-  winningCells?: Coordinate;
   isDraw?: boolean;
 };
 
@@ -124,7 +123,6 @@ export class Game {
       return {
         success: true,
         winner: this.currentPlayer,
-        winningCells: coordinate,
       };
     }
     return null;
