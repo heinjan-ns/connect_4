@@ -1,29 +1,84 @@
-# Project connect_4
+# Connect 4
 
-Implementation of a Connect-4 game in Typescript, with Gherkin scenario's.
+This is a typescript implementation a Connect 4 game for the orange NS dojo belt.
 
-# Acceptance Criteria
+## Summary of the connect-4 game Rules
 
-- Game displays a 6-row × 7-column board when started
-- Board is empty and ready for play
-- Each position on the board is clearly identifiable with row and column references
-- All 42 positions are available for coin placement
+- **Board**: 6 rows × 7 columns (42 positions)
+- **Objective**: Connect 4 coins in a row (horizontal, vertical, or diagonal)
+- **Gameplay**: Players alternate dropping coins into columns; coins fall to the lowest available position
+- **Win**: First player to get 4 in a row wins
+- **Draw**: All 42 positions filled with no winner
 
-# Basic Rules Include
+## Development
 
-- Board dimensions: 6 rows × 7 columns
-- Coin drop mechanics: Selected column, gravity to lowest position
-- Turn alternation: Player 1 goes first, then players alternate
-- Win condition: 4 consecutive coins in any direction (horizontal, vertical, or diagonal)
-- Draw condition: All 42 positions filled with no winner
-  Acceptance Criteria:
-- Game displays welcome message with basic rules on startup
+### Prerequisites
 
-Instructions explain board dimensions (6 rows, 7 columns, numbered 1-7 left to right)
-Instructions explain coin drop mechanics (column selection, gravity effect)
-Instructions explain turn order (Player 1 first, then alternate)
-Instructions explain the 4-in-a-row win condition (horizontal, vertical, diagonal)
-Instructions explain draw condition (full board, no winner)
-Instructions clarify column selection process using numbers 1-7
+- Node.js 20+
+- npm
 
-# CICD
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Run the Game
+
+```bash
+# No build required, run the development code
+npm run dev
+
+# Production mode: build first
+npm run build
+npm start
+```
+
+### Run linter and tests
+
+```bash
+# Run linter
+npm run lint
+
+# Run Cucumber tests
+npm run test:cucumber
+npm run test:cucumber:watch
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+## CI/CD on GitHub
+
+GitHub Actions automatically runs on every push and pull request:
+
+- Linter checks
+- Cucumber tests
+- Docker image build and push to GitHub Container Registry for the main branch
+- No PR flow implemented for this project
+
+## Docker stuff
+
+### Build Image
+
+```bash
+docker build -t connect4 .
+```
+
+### Run Container
+
+```bash
+docker run -it connect4
+```
+
+### Pull from GitHub Container Registry
+
+```bash
+docker pull ghcr.io/heinjan-ns/connect4:latest
+docker run -it ghcr.io/heinjan-ns/connect4:latest
+```
+
+Multi-platform support: linux/amd64, linux/arm64

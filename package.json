@@ -15,7 +15,7 @@
     "test:cucumber:coverage": "c8 cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:watch": "nodemon --watch src --watch tests --ext ts,feature --exec 'npm run test:cucumber:coverage'",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "dev": "ts-node src/main.ts",
     "prepare": "[ -n \"$CI\" ] || husky"
   },
