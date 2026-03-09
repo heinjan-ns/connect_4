@@ -66,7 +66,7 @@ export class Board {
     for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
       rowOutput += '\n';
       rowOutput += rowCounter.toString();
-      // Find all winning columns in this row
+      // find all winning columns in this row
       const winningColumns = winningCells
         .filter((cell) => cell.row === rowCounter)
         .map((cell) => cell.column);
@@ -89,6 +89,7 @@ export class Board {
     for (let columnCounter = 1; columnCounter <= this.columns; columnCounter++) {
       const cell = this.getCell({ row: rowToOutput, column: columnCounter });
       if (winningColumns.includes(columnCounter)) {
+        // winning cell: put it between [ ]
         rowOutput += `[${cell}]`;
       } else {
         rowOutput += ` ${cell} `;
