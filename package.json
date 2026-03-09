@@ -14,7 +14,7 @@
     "test:cucumber": "cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:coverage": "c8 cucumber-js tests/features/**/*.feature --require-module ts-node/register --require tests/features/**/*.ts",
     "test:cucumber:watch": "nodemon --watch src --watch tests --ext ts,feature --exec 'npm run test:cucumber:coverage'",
-    "smoketest": "ts-node tests/smoketest.ts",
+    "smoketest": "ts-node tests/main.smoketest.ts",
     "build": "tsc",
     "start": "node dist/src/main.js",
     "dev": "ts-node src/main.ts",

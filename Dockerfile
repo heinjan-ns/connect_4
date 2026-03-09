@@ -17,9 +17,9 @@ RUN CI=true npm ci
 
 COPY --from=test /app/src ./src
 COPY --from=test /app/tsconfig.json ./
-COPY --from=test /app/tests/smoketest.ts ./tests/
+COPY --from=test /app/tests/main.smoketest.ts ./tests/
 RUN npm run build
-RUN node dist/tests/smoketest.js
+RUN node dist/tests/main.smoketest.js
 
 FROM node:20-alpine
 
