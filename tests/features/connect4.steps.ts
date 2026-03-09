@@ -249,4 +249,5 @@ Given('the final board is displayed with the winning coins marked', function () 
   const winningCoordinates = this.game.winningCells;
   assert.strictEqual(this.game.isGameOver(), true);
   assert.ok(winningCoordinates.length >= 4, `Did not find 4 winning cells`);
+  assert.ok(this.game.board.consoleOutput(winningCoordinates));
 });
