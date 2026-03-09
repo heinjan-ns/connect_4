@@ -160,7 +160,12 @@ export class Game {
     };
 
     const vertWin = this.checkWinInDirection(lastPlayedCell, DIRECTION_PAIRS.Vertical);
+    if (vertWin) {
+      this.winningCells.push(coordinate);
+      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.Vertical);
+    }
     const horizonWin = this.checkWinInDirection(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
+
     const ascDiagonalWin = this.checkWinInDirection(
       lastPlayedCell,
       DIRECTION_PAIRS.DiagonalAscending
@@ -171,6 +176,29 @@ export class Game {
     );
 
     return vertWin || horizonWin || ascDiagonalWin || descDiagonalWin;
+  }
+
+  private getWinningCells(lastPlayedCell: OccupiedCell, directionPair: DirectionPair): void {
+    this.getWinningCellsInDirection(lastPlayedCell, directionPair[0]);
+    this.getWinningCellsInDirection(lastPlayedCell, directionPair[1]);
+    return;
+  }
+  private getWinningCellsInDirection(
+    { column, row, playerCell }: OccupiedCell,
+    direction: Direction
+  ) {
+    let rowToCheck = row + direction.row;
+    let columnToCheck = column + direction.column;
+
+    while (this.isValidRow(rowToCheck) && this.isValidColumn(columnToCheck)) {
+      if (this.board.getCell({ row: rowToCheck, column: columnToCheck }) === playerCell) {
+        this.winningCells.push({ row: rowToCheck, column: columnToCheck });
+        rowToCheck += direction.row;
+        columnToCheck += direction.column;
+      } else {
+        break;
+      }
+    }
   }
 
   private checkWinInDirection(lastPlayedCell: OccupiedCell, directionPair: DirectionPair): boolean {

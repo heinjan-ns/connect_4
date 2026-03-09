@@ -243,3 +243,10 @@ Given('Player 2 has just completed 4-in-a-row', function () {
   drawMoves.split(',').forEach((col) => this.game.makeMove(parseInt(col.trim())));
   this.result = this.game.makeMove(2);
 });
+
+Given('the final board is displayed with the winning coins marked', function () {
+  // should be 4 or more winning cells in winningCoordinates
+  const winningCoordinates = this.game.winningCells;
+  assert.strictEqual(this.game.isGameOver(), true);
+  assert.ok(winningCoordinates.length >= 4, `Did not find 4 winning cells`);
+});
