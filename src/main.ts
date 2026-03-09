@@ -43,8 +43,7 @@ export function gameLoop(game: Game, rl: readline.Interface) {
         if (result.winner) {
           showWinningBoard(
             game,
-            `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`,
-            result.winningCells!
+            `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`
           );
           rl.close();
           return;
