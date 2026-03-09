@@ -4,6 +4,7 @@
 [ ] outputHeader is static
 [ ] 'the game displays "Column 5 is full"' is hardcoded message in tests
 [ ] shouldn't the output be a different implementation cq file? it is now coupled to board.ts
+[ ] checkWins are duplicated (horizontal, vertical, diagonals) -> can be put in 1 stragegy?
 
 # DONE
 

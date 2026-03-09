@@ -159,37 +159,21 @@ export class Game {
       playerCell: this.board.getCell(coordinate),
     };
 
-    const vertWin = this.checkWinInDirection(lastPlayedCell, DIRECTION_PAIRS.Vertical);
-    if (vertWin) {
-      this.winningCells.push(coordinate);
-      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.Vertical);
+    let hasWin = false;
+
+    for (const directionPair of Object.values(DIRECTION_PAIRS)) {
+      if (this.checkWinInDirection(lastPlayedCell, directionPair)) {
+        if (!hasWin) {
+          // Only add center cell once, could be a win in multiple directions
+          // TODO: no test for that one...
+          this.winningCells.push(coordinate);
+          hasWin = true;
+        }
+        this.getWinningCells(lastPlayedCell, directionPair);
+      }
     }
 
-    const horizonWin = this.checkWinInDirection(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
-    if (horizonWin) {
-      this.winningCells.push(coordinate);
-      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
-    }
-
-    const ascDiagonalWin = this.checkWinInDirection(
-      lastPlayedCell,
-      DIRECTION_PAIRS.DiagonalAscending
-    );
-    if (ascDiagonalWin) {
-      this.winningCells.push(coordinate);
-      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.DiagonalAscending);
-    }
-
-    const descDiagonalWin = this.checkWinInDirection(
-      lastPlayedCell,
-      DIRECTION_PAIRS.DiagonalDescending
-    );
-    if (descDiagonalWin) {
-      this.winningCells.push(coordinate);
-      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.DiagonalDescending);
-    }
-
-    return vertWin || horizonWin || ascDiagonalWin || descDiagonalWin;
+    return hasWin;
   }
 
   private getWinningCells(lastPlayedCell: OccupiedCell, directionPair: DirectionPair): void {
