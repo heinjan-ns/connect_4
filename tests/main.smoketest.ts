@@ -15,7 +15,7 @@ input.push('1\n'); // Player 1 move
 input.push('2\n'); // Player 1 move
 input.push('1\n'); // Player 1 move
 input.push('2\n'); // Player 2 move
-input.push('1\n'); // Player 1 move -> win column
+input.push('1\n'); // Player 1 move -> wins in column 1
 
 input.push(null); // End stream
 
@@ -32,10 +32,10 @@ const rl = readline.createInterface({ input, output });
 // Listen for readline close event (game ends)
 rl.on('close', () => {
   if (game.isGameOver()) {
-    console.log('Main smoke test passed: game is over');
+    console.log('Smoketest passed: game is over, whoohoo!');
     process.exit(0);
   } else {
-    console.error('Main smoke test failed: no winner :(');
+    console.error('Smoketest failed: no winner, so something is wrong :(');
     process.exit(1);
   }
 });
@@ -43,6 +43,6 @@ rl.on('close', () => {
 try {
   gameLoop(game, rl);
 } catch (error) {
-  console.error('Main smoke test failed:', error);
+  console.error('Smoketest failed:', error);
   process.exit(1);
 }

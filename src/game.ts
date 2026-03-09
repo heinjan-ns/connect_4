@@ -127,6 +127,7 @@ export class Game {
     }
     return null;
   }
+
   private handleDraw(): MoveResult | null {
     if (this.board.isBoardFull()) {
       this.gameStatus = Status.Draw;
@@ -179,6 +180,7 @@ export class Game {
     this.getWinningCellsInDirection(lastPlayedCell, directionPair[1]);
     return;
   }
+
   private getWinningCellsInDirection(
     { column, row, playerCell }: OccupiedCell,
     direction: Direction
