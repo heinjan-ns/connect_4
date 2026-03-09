@@ -2,6 +2,13 @@ import * as readline from 'readline';
 import { Game } from './game';
 
 function main() {
+  if (process.env.SMOKE_TEST === 'true') {
+    const game = new Game();
+    console.log(game.board);
+    console.log('Smoke test passed: Game initialized successfully');
+    process.exit(0);
+  }
+
   const game = new Game();
   const rl = readline.createInterface({
     input: process.stdin,

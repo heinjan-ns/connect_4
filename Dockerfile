@@ -18,6 +18,7 @@ RUN CI=true npm ci
 COPY --from=test /app/src ./src
 COPY --from=test /app/tsconfig.json ./
 RUN npm run build
+RUN SMOKE_TEST=true node dist/main.js
 
 FROM node:20-alpine
 
