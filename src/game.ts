@@ -164,16 +164,30 @@ export class Game {
       this.winningCells.push(coordinate);
       this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.Vertical);
     }
+
     const horizonWin = this.checkWinInDirection(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
+    if (horizonWin) {
+      this.winningCells.push(coordinate);
+      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.Horizontal);
+    }
 
     const ascDiagonalWin = this.checkWinInDirection(
       lastPlayedCell,
       DIRECTION_PAIRS.DiagonalAscending
     );
+    if (ascDiagonalWin) {
+      this.winningCells.push(coordinate);
+      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.DiagonalAscending);
+    }
+
     const descDiagonalWin = this.checkWinInDirection(
       lastPlayedCell,
       DIRECTION_PAIRS.DiagonalDescending
     );
+    if (descDiagonalWin) {
+      this.winningCells.push(coordinate);
+      this.getWinningCells(lastPlayedCell, DIRECTION_PAIRS.DiagonalDescending);
+    }
 
     return vertWin || horizonWin || ascDiagonalWin || descDiagonalWin;
   }

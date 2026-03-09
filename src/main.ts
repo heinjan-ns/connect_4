@@ -1,6 +1,5 @@
 import * as readline from 'readline';
 import { Game } from './game';
-import { Coordinate } from './board';
 
 function main() {
   const game = new Game();
@@ -73,9 +72,9 @@ function showBoard(game: Game, message = '') {
   }
 }
 
-function showWinningBoard(game: Game, message = '', coordinate: Coordinate) {
+function showWinningBoard(game: Game, message = '') {
   console.clear();
-  console.log(game.board.consoleOutputWinner(coordinate));
+  console.log(game.board.consoleOutput(game.winningCells));
   if (message) {
     console.log(`\n${message}\n`);
   }

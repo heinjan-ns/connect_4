@@ -59,31 +59,18 @@ export class Board {
     return true;
   }
 
-  consoleOutput(): string {
+  consoleOutput(winningCells: Coordinate[] = []): string {
     // space-padding for nice formatting, otherwise the ◯s aren't aligned well
     const outputHeader = '   1   2   3   4   5   6   7';
     let rowOutput = '';
     for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
       rowOutput += '\n';
       rowOutput += rowCounter.toString();
-      rowOutput += this.getRowOutput(rowCounter);
-    }
-
-    return outputHeader + rowOutput;
-  }
-
-  consoleOutputWinner(coordinate: Coordinate): string {
-    // space-padding for nice formatting, otherwise the ◯s aren't aligned well
-    const outputHeader = '   1   2   3   4   5   6   7';
-    let rowOutput = '';
-    for (let rowCounter = this.rows; rowCounter >= 1; rowCounter--) {
-      rowOutput += '\n';
-      rowOutput += rowCounter.toString();
-      if (rowCounter === coordinate.row) {
-        rowOutput += this.getRowOutput(rowCounter, coordinate.column);
-      } else {
-        rowOutput += this.getRowOutput(rowCounter);
-      }
+      // Find all winning columns in this row
+      const winningColumns = winningCells
+        .filter((cell) => cell.row === rowCounter)
+        .map((cell) => cell.column);
+      rowOutput += this.getRowOutput(rowCounter, winningColumns);
     }
 
     return outputHeader + rowOutput;
@@ -97,13 +84,14 @@ export class Board {
     return column >= 1 && column <= this.columns;
   }
 
-  private getRowOutput(rowToOutput: number, winningColumn?: number): string {
+  private getRowOutput(rowToOutput: number, winningColumns: number[] = []): string {
     let rowOutput = '';
     for (let columnCounter = 1; columnCounter <= this.columns; columnCounter++) {
-      if (columnCounter === winningColumn) {
-        rowOutput += `[${this.getCell({ row: rowToOutput, column: columnCounter })}]`;
+      const cell = this.getCell({ row: rowToOutput, column: columnCounter });
+      if (winningColumns.includes(columnCounter)) {
+        rowOutput += `[${cell}]`;
       } else {
-        rowOutput += ` ${this.getCell({ row: rowToOutput, column: columnCounter })} `;
+        rowOutput += ` ${cell} `;
       }
     }
     return rowOutput;
