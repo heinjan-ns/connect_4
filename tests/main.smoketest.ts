@@ -19,7 +19,7 @@ input.push('1\n'); // Player 1 move -> win column
 
 input.push(null); // End stream
 
-// Create mock stdout (suppress output)
+// Create fake stdout to suppress output
 const output = new Writable({
   write(chunk, encoding, callback) {
     callback();
