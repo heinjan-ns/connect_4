@@ -1,5 +1,6 @@
 import * as readline from 'readline';
-import { Game, MoveResult, Player } from './game';
+import { Game, MoveResult } from './game';
+import { Player } from './board';
 import { HumanPlayer, PlayerStrategy } from './playerStrategy';
 
 function main() {

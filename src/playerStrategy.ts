@@ -10,7 +10,9 @@ export class HumanPlayer implements PlayerStrategy {
 
   async getMove(game: Game): Promise<number> {
     return new Promise((resolve) => {
-      this.rl.question(game.getInputColumnPrompt(), (answer) => {
+      const prompt = `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `;
+
+      this.rl.question(prompt, (answer) => {
         resolve(parseInt(answer));
       });
     });

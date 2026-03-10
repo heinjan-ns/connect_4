@@ -176,9 +176,7 @@ Then('the game displays "Column 5 is full"', function () {
 
 Then('Player {int} is prompted to select a valid column', function (player: number) {
   assert.strictEqual(this.game.getCurrentPlayer(), player);
-  const prompt = this.game.getInputColumnPrompt();
-  assert.ok(prompt.includes(`Player ${player}`));
-  assert.ok(prompt.includes('column'));
+  assert.strictEqual(this.game.getCurrentPlayerCoin(), player === 1 ? Cell.Player1 : Cell.Player2);
 });
 
 Then('it remains Player {int} turn', function (player: number) {
