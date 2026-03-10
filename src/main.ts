@@ -29,7 +29,10 @@ export function gameLoop(game: Game, rl: readline.Interface) {
     message = '';
 
     rl.question(getInputColumnPrompt(game), (answer) => {
-      const column = parseInt(answer);
+      processMove(parseInt(answer));
+    });
+
+    function processMove(column: number) {
       const result = game.makeMove(column);
 
       if (!result.success) {
@@ -51,7 +54,7 @@ export function gameLoop(game: Game, rl: readline.Interface) {
       }
 
       promptMove();
-    });
+    }
   };
 
   promptMove();
