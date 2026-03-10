@@ -28,38 +28,38 @@ export function gameLoop(game: Game, rl: readline.Interface) {
     showBoard(game, message);
     message = '';
 
-    rl.question(
-      `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `,
-      (answer) => {
-        const column = parseInt(answer);
-        const result = game.makeMove(column);
+    rl.question(getInputColumnPrompt(game), (answer) => {
+      const column = parseInt(answer);
+      const result = game.makeMove(column);
 
-        if (!result.success) {
-          message = result.message!;
-          promptMove();
-          return;
-        }
-
-        if (result.winner) {
-          showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
-          promptMove();
-          return;
-        }
-
-        if (result.isDraw) {
-          showBoard(game, `Game is a Draw - all positions filled!`);
-          promptMove();
-          return;
-        }
-
+      if (!result.success) {
+        message = result.message!;
         promptMove();
+        return;
       }
-    );
+
+      if (result.winner) {
+        showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+        promptMove();
+        return;
+      }
+
+      if (result.isDraw) {
+        showBoard(game, `Game is a Draw - all positions filled!`);
+        promptMove();
+        return;
+      }
+
+      promptMove();
+    });
   };
 
   promptMove();
 }
 
+function getInputColumnPrompt(game: Game): string {
+  return `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `;
+}
 function handlePlayAgain(rl: readline.Interface) {
   rl.question('Do you want to play another game? (yes or no) ', (answer) => {
     if (answer.toLowerCase() === 'yes') {
