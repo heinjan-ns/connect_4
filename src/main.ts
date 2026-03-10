@@ -29,18 +29,20 @@ export function gameLoop(game: Game, rl: readline.Interface) {
     message = '';
 
     rl.question(getInputColumnPrompt(game), (answer) => {
-      message = processMove(game, parseInt(answer), promptMove);
+      message = processMove(game, parseInt(answer), promptMove) || '';
+      if (message) {
+        promptMove();
+      }
     });
   };
 
   promptMove();
 }
 
-function processMove(game: Game, column: number, promptMove: () => void): string {
+function processMove(game: Game, column: number, promptMove: () => void): string | void {
   const result = game.makeMove(column);
 
   if (!result.success) {
-    promptMove();
     return result.message!;
   }
 
@@ -49,7 +51,6 @@ function processMove(game: Game, column: number, promptMove: () => void): string
   }
 
   promptMove();
-  return '';
 }
 
 function showGameEnd(game: Game, result: MoveResult) {
@@ -59,11 +60,12 @@ function showGameEnd(game: Game, result: MoveResult) {
   if (result.isDraw) {
     showBoard(game, `Game is a Draw - all positions filled!`);
   }
-  return;
 }
+
 function getInputColumnPrompt(game: Game): string {
   return `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `;
 }
+
 function handlePlayAgain(rl: readline.Interface) {
   rl.question('Do you want to play another game? (yes or no) ', (answer) => {
     if (answer.toLowerCase() === 'yes') {
