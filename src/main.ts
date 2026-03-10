@@ -29,35 +29,35 @@ export function gameLoop(game: Game, rl: readline.Interface) {
     message = '';
 
     rl.question(getInputColumnPrompt(game), (answer) => {
-      processMove(parseInt(answer));
+      message = processMove(game, parseInt(answer), promptMove);
     });
-
-    function processMove(column: number) {
-      const result = game.makeMove(column);
-
-      if (!result.success) {
-        message = result.message!;
-        promptMove();
-        return;
-      }
-
-      if (result.winner) {
-        showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
-        promptMove();
-        return;
-      }
-
-      if (result.isDraw) {
-        showBoard(game, `Game is a Draw - all positions filled!`);
-        promptMove();
-        return;
-      }
-
-      promptMove();
-    }
   };
 
   promptMove();
+}
+
+function processMove(game: Game, column: number, promptMove: () => void): string {
+  const result = game.makeMove(column);
+
+  if (!result.success) {
+    promptMove();
+    return result.message!;
+  }
+
+  if (result.winner) {
+    showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+    promptMove();
+    return '';
+  }
+
+  if (result.isDraw) {
+    showBoard(game, `Game is a Draw - all positions filled!`);
+    promptMove();
+    return '';
+  }
+
+  promptMove();
+  return '';
 }
 
 function getInputColumnPrompt(game: Game): string {
