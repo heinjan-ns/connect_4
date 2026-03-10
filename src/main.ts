@@ -1,5 +1,5 @@
 import * as readline from 'readline';
-import { Game } from './game';
+import { Game, MoveResult } from './game';
 
 function main() {
   const game = new Game();
@@ -44,22 +44,23 @@ function processMove(game: Game, column: number, promptMove: () => void): string
     return result.message!;
   }
 
-  if (result.winner) {
-    showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
-    promptMove();
-    return '';
-  }
-
-  if (result.isDraw) {
-    showBoard(game, `Game is a Draw - all positions filled!`);
-    promptMove();
-    return '';
+  if (result.winner || result.isDraw) {
+    showGameEnd(game, result);
   }
 
   promptMove();
   return '';
 }
 
+function showGameEnd(game: Game, result: MoveResult) {
+  if (result.winner) {
+    showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+  }
+  if (result.isDraw) {
+    showBoard(game, `Game is a Draw - all positions filled!`);
+  }
+  return;
+}
 function getInputColumnPrompt(game: Game): string {
   return `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `;
 }

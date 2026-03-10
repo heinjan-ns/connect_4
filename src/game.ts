@@ -30,7 +30,7 @@ const DIRECTION_PAIRS = {
   ],
 } as const satisfies Record<string, DirectionPair>;
 
-type MoveResult = {
+export type MoveResult = {
   success: boolean;
   message?: string;
   winner?: Player;
