@@ -10,7 +10,7 @@ function main() {
 
   showWelcome(game);
 
-  rl.question('', () => {
+  rl.question(game.getPrompt(), () => {
     console.clear();
     gameLoop(game, rl);
   });
@@ -82,7 +82,7 @@ function showWelcome(game: Game) {
   console.clear();
   console.log(game.getWelcomeMessage());
   console.log(game.getRules().join('\n'));
-  console.log(game.getPrompt());
+  console.log('\n');
 }
 
 main();

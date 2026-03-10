@@ -57,7 +57,7 @@ export class Game {
   }
 
   getWelcomeMessage(): string {
-    const welcome = 'Welcome to the game Connect 4.';
+    const welcome = 'Welcome to the game Connect 4.\n';
     return welcome;
   }
 
