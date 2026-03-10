@@ -1,7 +1,7 @@
 import * as readline from 'readline';
 import { Game, MoveResult } from './game';
 import { Player } from './board';
-import { HumanPlayer, PlayerStrategy } from './playerStrategy';
+import { HumanPlayer, RandomPlayer, PlayerStrategy } from './playerStrategy';
 
 function main() {
   const game = new Game();
@@ -10,14 +10,16 @@ function main() {
     output: process.stdout,
   });
 
-  const player1Strategy: PlayerStrategy = new HumanPlayer(rl);
-  const player2Strategy: PlayerStrategy = new HumanPlayer(rl);
-
   showWelcome(game);
 
-  rl.question(game.getPrompt(), () => {
-    console.clear();
-    gameLoop(game, rl, player1Strategy, player2Strategy);
+  rl.question('Random drop coins for player 2? (yes/no) ', (p2) => {
+    const player1Strategy = new HumanPlayer(rl);
+    const player2Strategy = p2.toLowerCase() === 'yes' ? new RandomPlayer() : new HumanPlayer(rl);
+
+    rl.question(game.getPrompt(), () => {
+      console.clear();
+      gameLoop(game, rl, player1Strategy, player2Strategy);
+    });
   });
 }
 
@@ -89,11 +91,14 @@ function showGameEnd(game: Game, result: MoveResult) {
 
 function handlePlayAgain(rl: readline.Interface) {
   rl.question('Do you want to play another game? (yes or no) ', (answer) => {
-    const player1Strategy: PlayerStrategy = new HumanPlayer(rl);
-    const player2Strategy: PlayerStrategy = new HumanPlayer(rl);
-
     if (answer.toLowerCase() === 'yes') {
-      gameLoop(new Game(), rl, player1Strategy, player2Strategy);
+      rl.question('Random drop coins for player 2? (yes/no) ', (p2) => {
+        const player1Strategy = new HumanPlayer(rl);
+        const player2Strategy =
+          p2.toLowerCase() === 'yes' ? new RandomPlayer() : new HumanPlayer(rl);
+        console.clear();
+        gameLoop(new Game(), rl, player1Strategy, player2Strategy);
+      });
     } else {
       rl.close();
     }
