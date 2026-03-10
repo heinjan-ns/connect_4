@@ -6,6 +6,7 @@
 [ ] shouldn't the output be a different implementation cq file? it is now coupled to board.ts
 [ ] makeMove complexity is 10, time to do something!
 [ ] CICD: No PR github actions flow implemented
+[ ] every time a new game starts, the old game object is still around
 
 # DONE
 

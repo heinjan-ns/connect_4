@@ -21,7 +21,15 @@ export function gameLoop(game: Game, rl: readline.Interface) {
 
   const promptMove = () => {
     if (game.isGameOver()) {
-      rl.close();
+      rl.question('Do you want to play another game? (yes or no) ', (answer) => {
+        if (answer.toLowerCase() === 'yes') {
+          const newGame = new Game();
+          console.clear();
+          gameLoop(newGame, rl);
+        } else {
+          rl.close();
+        }
+      });
       return;
     }
 
