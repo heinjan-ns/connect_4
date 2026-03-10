@@ -49,17 +49,14 @@ export function gameLoop(game: Game, rl: readline.Interface) {
         }
 
         if (result.winner) {
-          showWinningBoard(
-            game,
-            `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`
-          );
-          rl.close();
+          showBoard(game, `Player ${result.winner} (${game.getCurrentPlayerCoin()}) has won`);
+          promptMove();
           return;
         }
 
         if (result.isDraw) {
           showBoard(game, `Game is a Draw - all positions filled!`);
-          rl.close();
+          promptMove();
           return;
         }
 
@@ -72,14 +69,6 @@ export function gameLoop(game: Game, rl: readline.Interface) {
 }
 
 function showBoard(game: Game, message = '') {
-  console.clear();
-  console.log(game.board.consoleOutput());
-  if (message) {
-    console.log(`\n${message}\n`);
-  }
-}
-
-function showWinningBoard(game: Game, message = '') {
   console.clear();
   console.log(game.board.consoleOutput(game.winningCells));
   if (message) {
