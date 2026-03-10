@@ -21,15 +21,7 @@ export function gameLoop(game: Game, rl: readline.Interface) {
 
   const promptMove = () => {
     if (game.isGameOver()) {
-      rl.question('Do you want to play another game? (yes or no) ', (answer) => {
-        if (answer.toLowerCase() === 'yes') {
-          const newGame = new Game();
-          console.clear();
-          gameLoop(newGame, rl);
-        } else {
-          rl.close();
-        }
-      });
+      handlePlayAgain(rl);
       return;
     }
 
@@ -68,9 +60,19 @@ export function gameLoop(game: Game, rl: readline.Interface) {
   promptMove();
 }
 
+function handlePlayAgain(rl: readline.Interface) {
+  rl.question('Do you want to play another game? (yes or no) ', (answer) => {
+    if (answer.toLowerCase() === 'yes') {
+      gameLoop(new Game(), rl);
+    } else {
+      rl.close();
+    }
+  });
+}
+
 function showBoard(game: Game, message = '') {
   console.clear();
-  console.log(game.board.consoleOutput(game.winningCells));
+  console.log(game.board.consoleOutput(game.isGameOver() ? game.winningCells : []));
   if (message) {
     console.log(`\n${message}\n`);
   }
