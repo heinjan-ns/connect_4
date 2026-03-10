@@ -7,6 +7,8 @@
 [ ] makeMove complexity is 10, time to do something!
 [ ] CICD: No PR github actions flow implemented
 [ ] every time a new game starts, the old game object is still around
+[ ] gameloop has positional parameters -> codesmell!
+[ ] 'the game starts' -> empty test
 
 # DONE
 

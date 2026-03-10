@@ -1,25 +1,28 @@
-// Suppress all console output
+// keep the console as clear as possible for the smoketest: don't output anything
 console.log = () => {};
 console.clear = () => {};
 
-import { Readable, Writable } from 'stream';
+import { Writable } from 'stream';
 import * as readline from 'readline';
 import { gameLoop } from '../src/main';
 import { Game } from '../src/game';
+import { PlayerStrategy } from '../src/playerStrategy';
 
-// Create fake stdin
-const input = new Readable();
-input.push('1\n'); // Player 1 move
-input.push('2\n'); // Player 2 move
-input.push('1\n'); // Player 1 move
-input.push('2\n'); // Player 1 move
-input.push('1\n'); // Player 1 move
-input.push('2\n'); // Player 2 move
-input.push('1\n'); // Player 1 move -> wins in column 1
+class FakePlayer implements PlayerStrategy {
+  constructor(private moves: number[]) {}
+  private moveIndex = 0;
 
-input.push(null); // End stream
+  async getMove(): Promise<number> {
+    if (this.moveIndex >= this.moves.length) {
+      console.error('Smoketest failed: ran out of moves, game did not end');
+      rl.close();
+      process.exit(1);
+    }
 
-// Create fake stdout to suppress output
+    return this.moves[this.moveIndex++];
+  }
+}
+
 const output = new Writable({
   write(chunk, encoding, callback) {
     callback();
@@ -27,12 +30,11 @@ const output = new Writable({
 });
 
 const game = new Game();
-const rl = readline.createInterface({ input, output });
+const rl = readline.createInterface({ input: process.stdin, output });
 
-// Listen for readline close event (game ends)
 rl.on('close', () => {
   if (game.isGameOver()) {
-    console.log('Smoketest passed: game is over, whoohoo!');
+    console.info('Smoketest passed: game is over, whoohoo!');
     process.exit(0);
   } else {
     console.error('Smoketest failed: no winner, so something is wrong :(');
@@ -40,9 +42,8 @@ rl.on('close', () => {
   }
 });
 
-try {
-  gameLoop(game, rl);
-} catch (error) {
-  console.error('Smoketest failed:', error);
-  process.exit(1);
-}
+const player1 = new FakePlayer([1, 1, 1, 1]);
+const player2 = new FakePlayer([2, 2, 2]);
+
+const RUN_ONCE = true;
+gameLoop(game, rl, player1, player2, RUN_ONCE);

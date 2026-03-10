@@ -1,5 +1,6 @@
 import * as readline from 'readline';
-import { Game, MoveResult } from './game';
+import { Game, MoveResult, Player } from './game';
+import { HumanPlayer, PlayerStrategy } from './playerStrategy';
 
 function main() {
   const game = new Game();
@@ -8,19 +9,32 @@ function main() {
     output: process.stdout,
   });
 
+  const player1Strategy: PlayerStrategy = new HumanPlayer(rl);
+  const player2Strategy: PlayerStrategy = new HumanPlayer(rl);
+
   showWelcome(game);
 
   rl.question(game.getPrompt(), () => {
     console.clear();
-    gameLoop(game, rl);
+    gameLoop(game, rl, player1Strategy, player2Strategy);
   });
 }
 
-export function gameLoop(game: Game, rl: readline.Interface) {
+export function gameLoop(
+  game: Game,
+  rl: readline.Interface,
+  player1Strategy: PlayerStrategy,
+  player2Strategy: PlayerStrategy,
+  runOnce: boolean = false
+) {
   let message: string = '';
 
-  const promptMove = () => {
+  const promptMove = async () => {
     if (game.isGameOver()) {
+      if (runOnce) {
+        rl.close();
+        return;
+      }
       handlePlayAgain(rl);
       return;
     }
@@ -28,12 +42,22 @@ export function gameLoop(game: Game, rl: readline.Interface) {
     showBoard(game, message);
     message = '';
 
-    rl.question(getInputColumnPrompt(game), (answer) => {
-      message = processMove(game, parseInt(answer), promptMove) || '';
+    let strategy: PlayerStrategy;
+    if (game.getCurrentPlayer() === Player.One) {
+      strategy = player1Strategy;
+      const answer = await strategy.getMove(game);
+      message = processMove(game, answer, promptMove) || '';
       if (message) {
         promptMove();
       }
-    });
+    } else {
+      strategy = player2Strategy;
+      const answer = await strategy.getMove(game);
+      message = processMove(game, answer, promptMove) || '';
+      if (message) {
+        promptMove();
+      }
+    }
   };
 
   promptMove();
@@ -62,14 +86,13 @@ function showGameEnd(game: Game, result: MoveResult) {
   }
 }
 
-function getInputColumnPrompt(game: Game): string {
-  return `Player ${game.getCurrentPlayer()} (${game.getCurrentPlayerCoin()}): Enter column (1 - ${game.board.columns}): `;
-}
-
 function handlePlayAgain(rl: readline.Interface) {
   rl.question('Do you want to play another game? (yes or no) ', (answer) => {
+    const player1Strategy: PlayerStrategy = new HumanPlayer(rl);
+    const player2Strategy: PlayerStrategy = new HumanPlayer(rl);
+
     if (answer.toLowerCase() === 'yes') {
-      gameLoop(new Game(), rl);
+      gameLoop(new Game(), rl, player1Strategy, player2Strategy);
     } else {
       rl.close();
     }

@@ -1,7 +1,9 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { Board, BOARD_COLUMNS, BOARD_ROWS, Cell } from '../../src/board';
-import assert from 'assert';
 import { Game } from '../../src/game';
+import { Board, BOARD_COLUMNS, BOARD_ROWS, Cell } from '../../src/board';
+import { HumanPlayer } from '../../src/playerStrategy';
+import * as readline from 'readline';
+import assert from 'assert';
 
 Given('the game is started', function () {
   // empty for now, only use a board
@@ -64,7 +66,7 @@ Given(
 );
 
 When('the game starts', function () {
-  this.game.start();
+  // empty for now, what to test...?
 });
 
 Then('a welcome message and basic rules are displayed', function () {
@@ -174,11 +176,9 @@ Then('the game displays "Column 5 is full"', function () {
 
 Then('Player {int} is prompted to select a valid column', function (player: number) {
   assert.strictEqual(this.game.getCurrentPlayer(), player);
-  if (player === 1) {
-    assert.strictEqual(this.game.getCurrentPlayerCoin(), Cell.Player1);
-  } else {
-    assert.strictEqual(this.game.getCurrentPlayerCoin(), Cell.Player2);
-  }
+  const prompt = this.game.getInputColumnPrompt();
+  assert.ok(prompt.includes(`Player ${player}`));
+  assert.ok(prompt.includes('column'));
 });
 
 Then('it remains Player {int} turn', function (player: number) {
@@ -250,4 +250,21 @@ Given('the final board is displayed with the winning coins marked', function () 
   assert.strictEqual(this.game.isGameOver(), true);
   assert.ok(winningCoordinates.length >= 4, `Did not find 4 winning cells`);
   assert.ok(this.game.board.consoleOutput(winningCoordinates));
+});
+
+Given('player {int} is a human player', function (playerNum: number) {
+  const dummyReadline = null as unknown as readline.Interface;
+  if (playerNum === 1) {
+    this.player1Strategy = new HumanPlayer(dummyReadline);
+  } else {
+    this.player2Strategy = new HumanPlayer(dummyReadline);
+  }
+});
+
+Then('player {int} should be human', function (playerNum: number) {
+  if (playerNum === 1) {
+    assert.ok(this.player1Strategy instanceof HumanPlayer);
+  } else {
+    assert.ok(this.player2Strategy instanceof HumanPlayer);
+  }
 });

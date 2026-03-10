@@ -1,4 +1,5 @@
 import { Board, Cell, Player, Coordinate } from './board';
+export { Player };
 
 type OccupiedCell = Coordinate & { playerCell: Cell };
 
@@ -52,10 +53,6 @@ export class Game {
     this.winningCells = [];
   }
 
-  start() {
-    // empty for now
-  }
-
   getWelcomeMessage(): string {
     const welcome = 'Welcome to the game Connect 4.\n';
     return welcome;
@@ -83,6 +80,10 @@ export class Game {
 
   getCurrentPlayer(): Player {
     return this.currentPlayer;
+  }
+
+  getInputColumnPrompt(): string {
+    return `Player ${this.getCurrentPlayer()} (${this.getCurrentPlayerCoin()}): Enter column (1 - ${this.board.columns}): `;
   }
 
   makeMove(column: number): MoveResult {
